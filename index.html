@@ -1,80 +1,129 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<title>ARZ AI</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ARZ AI</title>
 
-<style>
-body {
-  font-family: Arial;
-  background: #f5f7fa;
-  padding: 20px;
-}
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-.container {
-  max-width: 600px;
-  margin: auto;
-}
+    .container {
+      width: 420px;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      text-align: center;
+    }
 
-h1 {
-  font-size: 32px;
-  color: #0b3c5d;
-}
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      font-weight: 700;
+    }
 
-.sub {
-  font-size: 12px;
-  letter-spacing: 2px;
-  color: #888;
-  margin-bottom: 20px;
-}
+    .subtitle {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 20px;
+    }
 
-input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 10px;
-}
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
 
-button {
-  padding: 12px;
-  background: #d90429;
-  color: white;
-  border: none;
-  width: 100%;
-}
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #e53935;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
 
-#cevap {
-  margin-top: 20px;
-  white-space: pre-wrap;
-  background: white;
-  padding: 10px;
-}
-</style>
+    button:hover {
+      background: #c62828;
+    }
 
+    #cevap {
+      margin-top: 20px;
+      text-align: left;
+      font-size: 14px;
+      white-space: pre-wrap;
+      background: #f7f7f7;
+      padding: 12px;
+      border-radius: 8px;
+      min-height: 60px;
+    }
+
+    .loading {
+      color: #999;
+      font-style: italic;
+    }
+  </style>
 </head>
+
 <body>
 
 <div class="container">
   <h1>ARZ</h1>
-  <div class="sub">AFET RAPORLAMA VE ZAMANLAMA</div>
+  <div class="subtitle">AFET RAPORLAMA VE ZAMANLAMA</div>
 
   <input id="soru" placeholder="Sorunuzu yazın..." />
-  <button onclick="sor()">Sor</button>
+  <button onclick="calistir()">Sor</button>
 
-  <div id="cevap"></div>
+  <div id="cevap">Cevap burada görünecek...</div>
 </div>
 
 <script>
-async function sor() {
-  const mesaj = document.getElementById("soru").value;
+async function calistir() {
+  const input = document.getElementById("soru");
+  const cevap = document.getElementById("cevap");
 
-  const res = await fetch("/api/ask", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({ message: mesaj })
-  });
+  const mesaj = input.value.trim();
 
-  const data = await res.json();
-  document.getElementById("cevap").innerText = data.answer;
+  if (!mesaj) {
+    cevap.innerText = "Lütfen bir soru yaz.";
+    return;
+  }
+
+  cevap.innerHTML = "<span class='loading'>Düşünüyor...</span>";
+
+  try {
+    const res = await fetch("/api/ask", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: mesaj
+      })
+    });
+
+    const data = await res.json();
+
+    cevap.innerText = data.answer || "Cevap alınamadı.";
+
+  } catch (err) {
+    cevap.innerText = "Bağlantı hatası oluştu.";
+  }
 }
 </script>
 
