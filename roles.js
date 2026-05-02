@@ -7,12 +7,12 @@ export const roles = {
   doctor: {
     id: "doctor",
     label: "Hekim / Sağlık Personeli",
-    pages: ["panel", "publicHealth", "reports", "ai", "profile", "settings"]
+    pages: ["panel", "field", "map", "publicHealth", "reports", "ai", "profile", "settings"]
   },
   logistics: {
     id: "logistics",
     label: "Lojistik / Firma",
-    pages: ["panel", "logistics", "map", "scanner", "reports", "profile", "settings"]
+    pages: ["panel", "logistics", "map", "scanner", "reports", "ai", "profile", "settings"]
   },
   volunteer: {
     id: "volunteer",

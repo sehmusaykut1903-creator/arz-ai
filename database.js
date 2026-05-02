@@ -27,8 +27,8 @@ export async function createUserProfile(user, extra = {}) {
     roleLabel: role.label,
     allowedPages: role.pages,
     city: extra.city || "",
-    institution: extra.institution || "",
-    department: extra.department || "",
+    institution: extra.institution || "Yozgat Bozok Üniversitesi Tıp Fakültesi",
+    department: extra.department || "Halk Sağlığı Anabilim Dalı",
     avatarUrl: "",
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp()

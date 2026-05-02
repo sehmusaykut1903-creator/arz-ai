@@ -1,7 +1,7 @@
 {
   "name": "arz-ai",
-  "version": "5.1.1",
-  "description": "ARZ - Afet Raporlama ve Zamanlama Local Brain demo sistemi",
+  "version": "5.2.1",
+  "description": "ARZ - Afet Raporlama ve Zamanlama Firebase bağlantılı demo sistemi",
   "type": "module",
   "private": true,
   "scripts": {
@@ -13,11 +13,11 @@
     "afet",
     "raporlama",
     "zamanlama",
+    "firebase",
     "local-brain",
     "disaster-management",
     "public-health",
-    "logistics",
-    "emergency-management"
+    "logistics"
   ],
   "author": "Şehmus AYKUT",
   "contributors": [
