@@ -2,251 +2,1204 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>ARZ - Afet Raporlama ve Zamanlama</title>
+
 <style>
-:root{--primary:#0b2d5c;--accent:#e53935;--bg:#f4f6f9;--card:#fff;--text:#111827;--muted:#6b7280;--border:#e5e7eb}
+:root{
+  --primary:#0B2D5C;
+  --primary-2:#003366;
+  --accent:#E53935;
+  --bg:#F4F6FA;
+  --card:#FFFFFF;
+  --text:#111827;
+  --muted:#6B7280;
+  --border:#E5E7EB;
+  --success:#16A34A;
+  --warning:#F59E0B;
+  --danger:#DC2626;
+  --info:#0284C7;
+  --radius:18px;
+}
+
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,system-ui;background:var(--bg);color:var(--text);height:100vh;overflow:hidden}
-.app{display:grid;grid-template-columns:250px 1fr;height:100vh}
-.sidebar{background:#071a33;color:white;padding:20px 16px;display:flex;flex-direction:column}
-.brand-title{font-size:34px;font-weight:900}.brand-title span{color:var(--accent)}
-.brand-sub{font-size:10px;letter-spacing:2px;color:#cbd5e1;margin-bottom:28px}
-.nav button{width:100%;border:0;background:transparent;color:#cbd5e1;text-align:left;padding:12px 14px;margin-bottom:8px;border-radius:12px;cursor:pointer;font-weight:700}
-.nav button.active,.nav button:hover{background:linear-gradient(135deg,var(--primary),var(--accent));color:white}
-.sidebar-footer{margin-top:auto;font-size:11px;color:#94a3b8;line-height:1.5}
-.main{height:100vh;display:flex;flex-direction:column;min-width:0}
-.header{height:70px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 22px}
-.header h1{margin:0;font-size:22px}.status{display:flex;gap:10px}.badge{padding:8px 12px;border-radius:999px;background:#eef2ff;color:var(--primary);font-size:12px;font-weight:800}.red{background:#fee2e2;color:#b91c1c}
-.content{padding:22px;overflow:auto}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
-.card{background:white;border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:0 10px 25px rgba(15,23,42,.06)}
-.big{font-size:32px;font-weight:900;color:var(--primary)}
-.btn{border:0;background:linear-gradient(135deg,var(--primary),var(--accent));color:white;padding:12px 14px;border-radius:12px;font-weight:800;cursor:pointer;margin-top:10px}
-.btn.secondary{background:#e5e7eb;color:#111827}
-input,select,textarea{width:100%;padding:12px;border:1px solid var(--border);border-radius:12px;margin:7px 0;font-size:14px}
-textarea{min-height:90px}
-.item{padding:12px;border:1px solid var(--border);border-radius:14px;background:#f8fafc;margin-bottom:10px}
-.map-box{height:420px;border-radius:20px;background:linear-gradient(135deg,#dbeafe,#ecfeff);border:1px solid var(--border);position:relative;overflow:hidden}
-.marker{position:absolute;transform:translate(-50%,-50%);padding:8px 10px;border-radius:999px;color:white;font-size:12px;font-weight:900;cursor:pointer}
-.layer{border:1px solid var(--border);background:white;padding:10px 12px;border-radius:999px;font-weight:800;cursor:pointer;margin:4px}
-.layer.active{background:linear-gradient(135deg,var(--primary),var(--accent));color:white}
-.answer{white-space:pre-wrap;line-height:1.55;background:#f8fafc;border-radius:14px;padding:14px;border:1px solid var(--border);margin-top:12px}
-@media(max-width:850px){.app{grid-template-columns:1fr}.sidebar{height:auto}.nav{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}body{overflow:auto}.main{height:auto}}
+
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow:hidden;
+}
+
+.app{
+  display:grid;
+  grid-template-columns:270px minmax(0,1fr);
+  height:100vh;
+}
+
+.sidebar{
+  background:linear-gradient(180deg,#071A33,#0B2D5C);
+  color:white;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.brand{
+  padding:14px 10px 18px;
+  border-bottom:1px solid rgba(255,255,255,.15);
+}
+
+.brand-title{
+  font-size:42px;
+  line-height:1;
+  font-weight:950;
+  letter-spacing:-2px;
+}
+
+.brand-title span{color:var(--accent)}
+
+.brand-subtitle{
+  margin-top:8px;
+  font-size:10px;
+  letter-spacing:2.2px;
+  color:#CBD5E1;
+  text-transform:uppercase;
+  font-weight:800;
+}
+
+.brand-slogan{
+  margin-top:8px;
+  font-size:12px;
+  color:#E5E7EB;
+}
+
+.nav{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  overflow:auto;
+}
+
+.nav button{
+  border:0;
+  background:transparent;
+  color:#CBD5E1;
+  padding:11px 12px;
+  border-radius:14px;
+  text-align:left;
+  font-weight:800;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  transition:.15s;
+}
+
+.nav button:hover,
+.nav button.active{
+  background:linear-gradient(135deg,var(--primary-2),var(--accent));
+  color:#fff;
+  box-shadow:0 10px 24px rgba(0,0,0,.18);
+}
+
+.sidebar-footer{
+  margin-top:auto;
+  font-size:11px;
+  color:#CBD5E1;
+  line-height:1.45;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:16px;
+  padding:12px;
+}
+
+.main{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+}
+
+.header{
+  height:72px;
+  background:rgba(255,255,255,.94);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:0 22px;
+}
+
+.header h1{
+  margin:0;
+  font-size:22px;
+  font-weight:900;
+  color:var(--primary);
+}
+
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:8px 11px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+  background:#EEF2FF;
+  color:var(--primary);
+}
+
+.badge.red{background:#FEE2E2;color:#B91C1C}
+.badge.green{background:#DCFCE7;color:#166534}
+.badge.orange{background:#FEF3C7;color:#92400E}
+
+.content{
+  flex:1;
+  min-height:0;
+  overflow:auto;
+  padding:22px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:16px;
+}
+
+.grid-2{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:18px;
+  box-shadow:0 12px 30px rgba(15,23,42,.07);
+  min-width:0;
+}
+
+.card h2,.card h3{
+  margin:0 0 10px;
+  color:var(--primary);
+}
+
+.muted{color:var(--muted)}
+.big{
+  font-size:34px;
+  font-weight:950;
+  color:var(--primary);
+}
+
+.btn{
+  border:0;
+  border-radius:13px;
+  padding:12px 14px;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:white;
+  font-weight:900;
+  cursor:pointer;
+  margin-top:8px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+.btn.secondary{
+  background:#E5E7EB;
+  color:#111827;
+}
+
+.btn.full{width:100%}
+
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  margin:7px 0;
+  font-size:14px;
+  background:white;
+  color:var(--text);
+}
+
+textarea{min-height:92px;resize:vertical}
+
+.item{
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:#F8FAFC;
+  margin-bottom:10px;
+  line-height:1.45;
+}
+
+.layer-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:14px;
+}
+
+.layer{
+  border:1px solid var(--border);
+  background:#fff;
+  color:var(--text);
+  padding:10px 12px;
+  border-radius:999px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.layer.active{
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:#fff;
+  border-color:var(--accent);
+}
+
+.map-box{
+  height:440px;
+  border-radius:20px;
+  position:relative;
+  overflow:hidden;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at 28% 35%,rgba(220,38,38,.28),transparent 16%),
+    radial-gradient(circle at 70% 30%,rgba(2,132,199,.22),transparent 18%),
+    radial-gradient(circle at 48% 66%,rgba(22,163,74,.22),transparent 20%),
+    linear-gradient(135deg,#DBEAFE,#ECFEFF 50%,#FEF9C3);
+}
+
+.map-box::after{
+  content:"TÜRKİYE OPERASYON HARİTASI";
+  position:absolute;
+  left:18px;
+  bottom:14px;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:1px;
+  color:rgba(11,45,92,.45);
+}
+
+.marker{
+  position:absolute;
+  transform:translate(-50%,-50%);
+  color:#fff;
+  padding:8px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
+  border:2px solid rgba(255,255,255,.8);
+}
+
+.ai-box{
+  min-height:360px;
+  background:#F8FAFC;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:14px;
+  white-space:pre-wrap;
+  line-height:1.55;
+}
+
+.chips{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:10px 0 14px;
+}
+
+.chip{
+  border:1px solid var(--border);
+  background:white;
+  padding:8px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.settings{
+  display:grid;
+  grid-template-columns:260px minmax(0,1fr);
+  gap:16px;
+}
+
+.settings-menu{
+  max-height:calc(100vh - 130px);
+  overflow:auto;
+}
+
+.settings-menu button{
+  width:100%;
+  text-align:left;
+  border:0;
+  background:transparent;
+  color:var(--text);
+  padding:11px 12px;
+  border-radius:13px;
+  font-weight:800;
+  cursor:pointer;
+  margin-bottom:6px;
+}
+
+.settings-menu button.active{
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:white;
+}
+
+.toggle-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:12px 0;
+  border-bottom:1px solid var(--border);
+}
+
+.switch{
+  width:52px;
+  height:30px;
+  border-radius:999px;
+  background:#CBD5E1;
+  padding:3px;
+  cursor:pointer;
+  flex-shrink:0;
+}
+
+.switch.on{background:var(--accent)}
+
+.knob{
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  background:#fff;
+  transition:.2s;
+}
+
+.switch.on .knob{transform:translateX(22px)}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.48);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:50;
+}
+
+.modal.show{display:flex}
+
+.modal-box{
+  background:#fff;
+  border-radius:22px;
+  padding:22px;
+  width:min(620px,96vw);
+  max-height:85vh;
+  overflow:auto;
+  box-shadow:0 30px 80px rgba(0,0,0,.35);
+}
+
+video{
+  width:100%;
+  background:#111827;
+  border-radius:16px;
+  min-height:220px;
+}
+
+@media(max-width:900px){
+  body{overflow:auto}
+  .app{grid-template-columns:1fr;height:auto;min-height:100vh}
+  .sidebar{position:relative}
+  .nav{display:grid;grid-template-columns:repeat(2,1fr)}
+  .main{height:auto}
+  .header{height:auto;align-items:flex-start;flex-direction:column;padding:14px}
+  .content{padding:14px}
+  .grid-2,.settings{grid-template-columns:1fr}
+}
 </style>
 </head>
 
 <body>
 <div class="app">
-<aside class="sidebar">
-  <div class="brand">
-    <div class="brand-title">ARZ<span>.</span></div>
-    <div class="brand-sub">AFET RAPORLAMA VE ZAMANLAMA</div>
-  </div>
-  <nav class="nav" id="nav"></nav>
-  <div class="sidebar-footer">ARZ Sistemi © 2026<br>Şehmus AYKUT tarafından geliştirilmiştir.</div>
-</aside>
-
-<main class="main">
-  <header class="header">
-    <h1 id="pageTitle">Panel</h1>
-    <div class="status">
-      <span class="badge red">Acil Durum Protokolü</span>
-      <span class="badge">Local Brain Aktif</span>
-      <span class="badge">Offline Sync</span>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-title">ARZ<span>.</span></div>
+      <div class="brand-subtitle">AFET RAPORLAMA VE ZAMANLAMA</div>
+      <div class="brand-slogan">Doğru Veri, Doğru Zaman, Doğru Müdahale.</div>
     </div>
-  </header>
-  <section class="content" id="content"></section>
-</main>
+
+    <nav class="nav" id="nav"></nav>
+
+    <div class="sidebar-footer">
+      <b>ARZ Sistemi v5.1.1 Demo</b><br>
+      Şehmus AYKUT tarafından geliştirilmiştir.<br>
+      Local Brain ücretsiz mod aktiftir.
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="header">
+      <h1 id="pageTitle">Panel</h1>
+      <div class="header-actions">
+        <span class="badge red">Acil Durum Protokolü</span>
+        <span class="badge green">Local Brain</span>
+        <span class="badge orange">Offline Demo</span>
+      </div>
+    </header>
+
+    <section class="content" id="content"></section>
+  </main>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div id="modalContent"></div>
+    <button class="btn full" onclick="closeModal()">Kapat</button>
+  </div>
 </div>
 
 <script>
-const pages=[
-["panel","Panel"],["map","Harita"],["logistics","Lojistik"],["scanner","Tarama Merkezi"],
-["volunteers","Gönüllü Sistemi"],["publicHealth","Halk Sağlığı"],["reports","Raporlar"],["ai","ARZ AI"],["settings","Ayarlar"]
+const pages = [
+  ["panel","📊","Panel"],
+  ["map","🗺️","Harita"],
+  ["logistics","🚛","Lojistik"],
+  ["scanner","📷","Tarama Merkezi"],
+  ["volunteers","👥","Gönüllü Sistemi"],
+  ["field","📍","Saha Bildirimi"],
+  ["publicHealth","🧬","Halk Sağlığı"],
+  ["reports","📄","Raporlar"],
+  ["ai","🤖","ARZ AI"],
+  ["settings","⚙️","Ayarlar"]
 ];
 
-let currentPage="panel";
-let currentLayer="earthquake";
+let currentPage = "panel";
+let currentLayer = localStorage.getItem("arz_layer") || "earthquake";
+let selectedSetting = "general";
+let cameraStream = null;
 
-const state={
-shipments:JSON.parse(localStorage.getItem("arz_shipments")||"[]"),
-volunteers:JSON.parse(localStorage.getItem("arz_volunteers")||"[]"),
-reports:JSON.parse(localStorage.getItem("arz_reports")||"[]")
+const state = {
+  shipments: JSON.parse(localStorage.getItem("arz_shipments") || "[]"),
+  volunteers: JSON.parse(localStorage.getItem("arz_volunteers") || "[]"),
+  reports: JSON.parse(localStorage.getItem("arz_reports") || "[]"),
+  fieldReports: JSON.parse(localStorage.getItem("arz_field_reports") || "[]"),
+  aiHistory: JSON.parse(localStorage.getItem("arz_ai_history") || "[]"),
+  settings: JSON.parse(localStorage.getItem("arz_settings") || "{}")
 };
 
-function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
+const defaultSettings = {
+  notifications:true,
+  localBrain:true,
+  offlineMode:true,
+  aiMemory:true,
+  boldText:false,
+  highContrast:false,
+  largeButtons:false,
+  mapLive:true,
+  emergencySos:true,
+  storeReports:true
+};
+
+state.settings = {...defaultSettings, ...state.settings};
+
+function save(key,value){ localStorage.setItem(key, JSON.stringify(value)); }
+function $(id){ return document.getElementById(id); }
+
 function navRender(){
- document.getElementById("nav").innerHTML=pages.map(([id,label])=>`<button class="${currentPage===id?'active':''}" onclick="go('${id}')">${label}</button>`).join("");
+  $("nav").innerHTML = pages.map(([id,icon,label]) => `
+    <button class="${currentPage===id?'active':''}" onclick="go('${id}')">
+      <span>${icon}</span> ${label}
+    </button>
+  `).join("");
 }
-function go(p){currentPage=p;navRender();render()}
-function title(t){document.getElementById("pageTitle").innerText=t}
+
+function go(page){
+  currentPage = page;
+  navRender();
+  render();
+}
+
+function setTitle(text){ $("pageTitle").innerText = text; }
+
+function openModal(html){
+  $("modalContent").innerHTML = html;
+  $("modal").classList.add("show");
+}
+
+function closeModal(){
+  $("modal").classList.remove("show");
+}
 
 function render(){
-const c=document.getElementById("content");
+  const c = $("content");
 
-if(currentPage==="panel"){
-title("Genel Yönetim Paneli");
-c.innerHTML=`
-<div class="grid">
-<div class="card"><h3>Vaka / Yaralı Verisi</h3><div class="big">1428</div><p>Son 1 saatte +42 bildirim</p></div>
-<div class="card"><h3>Lojistik Akış</h3><div class="big">${state.shipments.length}</div><p>Aktif sevkiyat</p></div>
-<div class="card"><h3>Gönüllü Yönetimi</h3><div class="big">${state.volunteers.length}</div><p>Kayıtlı gönüllü</p></div>
-<div class="card"><h3>Sistem Riski</h3><div class="big">%84</div><p>Kritik durum izleniyor</p></div>
-</div>
-<div class="card" style="margin-top:16px">
-<h3>Hızlı İşlem Merkezi</h3>
-<button class="btn" onclick="go('logistics')">Yeni Sevkiyat</button>
-<button class="btn" onclick="go('map')">Haritada Göster</button>
-<button class="btn" onclick="go('ai')">ARZ AI Analiz Al</button>
-<button class="btn" onclick="createReport()">Rapor Oluştur</button>
-</div>`;
-}
+  if(currentPage === "panel"){
+    setTitle("Genel Yönetim Paneli");
+    c.innerHTML = `
+      <div class="grid">
+        <div class="card">
+          <h3>Vaka / Yaralı Verisi</h3>
+          <div class="big">1428</div>
+          <p class="muted">Son 1 saatte +42 bildirim</p>
+          <span class="badge red">Kritik izlem</span>
+        </div>
+        <div class="card">
+          <h3>Lojistik Akış</h3>
+          <div class="big">${state.shipments.length}</div>
+          <p class="muted">Aktif kayıtlı sevkiyat</p>
+          <button class="btn full" onclick="go('logistics')">Yeni Sevkiyat</button>
+        </div>
+        <div class="card">
+          <h3>Gönüllü Yönetimi</h3>
+          <div class="big">${state.volunteers.length}</div>
+          <p class="muted">Kayıtlı gönüllü</p>
+          <button class="btn full" onclick="go('volunteers')">Gönüllü Ekle</button>
+        </div>
+        <div class="card">
+          <h3>Sistem Riski</h3>
+          <div class="big">%84</div>
+          <p class="muted">Afet yoğunluğu ve saha bildirimlerine göre</p>
+          <button class="btn full" onclick="go('ai')">ARZ AI Analiz Al</button>
+        </div>
+      </div>
 
-else if(currentPage==="map"){
-title("Stratejik Afet Haritası");
-const markers=getMarkers(currentLayer);
-c.innerHTML=`
-<div>
-${[["earthquake","Deprem"],["flood","Sel"],["fire","Yangın"],["logistics","Lojistik"],["health","Sağlık"]].map(x=>`<button class="layer ${currentLayer===x[0]?'active':''}" onclick="setLayer('${x[0]}')">${x[1]}</button>`).join("")}
-</div>
-<div class="grid" style="margin-top:14px">
-<div class="card"><h3>${layerName(currentLayer)} Katmanı</h3><div class="map-box">
-${markers.map(m=>`<div class="marker" style="left:${m.x}%;top:${m.y}%;background:${m.color}" onclick="showMapInfo('${m.city}','${m.type}','${m.risk}')">${m.city}</div>`).join("")}
-</div></div>
-<div class="card" id="mapInfo"><h3>Harita Bilgisi</h3><p>Katman seçin veya marker’a tıklayın.</p><p><b>Yozgat:</b> Pilot koordinasyon merkezi.</p></div>
-</div>`;
-}
+      <div class="grid-2" style="margin-top:16px">
+        <div class="card">
+          <h3>Hızlı İşlem Merkezi</h3>
+          <button class="btn full" onclick="go('field')">Yeni Saha Bildirimi</button>
+          <button class="btn full" onclick="go('map')">Haritada Göster</button>
+          <button class="btn full" onclick="createReport()">Rapor Oluştur</button>
+          <button class="btn full" onclick="go('scanner')">QR / Kimlik Tara</button>
+        </div>
 
-else if(currentPage==="logistics"){
-title("Lojistik ve Sevkiyat");
-c.innerHTML=`
-<div class="grid">
-<div class="card">
-<h3>Yeni Sevkiyat</h3>
-<input id="shipName" placeholder="Sevkiyat adı">
-<input id="from" placeholder="Çıkış noktası">
-<input id="to" placeholder="Varış noktası">
-<input id="vehicle" placeholder="Araç tipi / plaka">
-<textarea id="contentShip" placeholder="İçerik / miktar"></textarea>
-<select id="priority"><option>Kritik</option><option>Yüksek</option><option>Orta</option><option>Düşük</option></select>
-<button class="btn" onclick="addShipment()">Sevkiyat Ekle</button>
-</div>
-<div class="card"><h3>Aktif Sevkiyatlar</h3>
-${state.shipments.length?state.shipments.map(s=>`<div class="item"><b>${s.name}</b><br>${s.from} → ${s.to}<br>${s.content}<br>Öncelik: ${s.priority}<br>Durum: ${s.status}<br><button class="btn secondary" onclick="applyRoute('${s.id}')">Rotayı Uygula</button></div>`).join(""):"<p>Henüz sevkiyat yok.</p>"}
-</div></div>`;
-}
+        <div class="card">
+          <h3>Güncel Saha Bildirimleri</h3>
+          ${state.fieldReports.length ? state.fieldReports.slice(-4).reverse().map(r => `
+            <div class="item"><b>${r.type}</b><br>${r.city} • ${r.priority}<br>${r.note}</div>
+          `).join("") : `
+            <div class="item"><b>Acil Triaj Talebi</b><br>Hatay • Kritik • Demo bildirim</div>
+            <div class="item"><b>Su Deposu Kritik</b><br>Elbistan • Yüksek • Demo bildirim</div>
+            <div class="item"><b>Lojistik Sevkiyat</b><br>Ankara → Hatay • Yolda</div>
+          `}
+        </div>
+      </div>
+    `;
+  }
 
-else if(currentPage==="scanner"){
-title("ARZ Tarama Merkezi");
-c.innerHTML=`
-<div class="grid">
-<div class="card"><h3>QR / Barkod Tarama</h3><video id="camera" autoplay playsinline style="width:100%;border-radius:14px;background:#111"></video>
-<button class="btn" onclick="openCamera()">Kamerayı Aç</button>
-<button class="btn secondary" onclick="closeCamera()">Kamerayı Kapat</button>
-<button class="btn" onclick="demoQR()">Demo QR Tara</button></div>
-<div class="card" id="scanResult"><h3>Tarama Sonucu</h3><p>Henüz tarama yapılmadı.</p></div>
-</div>`;
-}
+  else if(currentPage === "map"){
+    setTitle("Stratejik Afet Haritası");
+    const markers = getMarkers(currentLayer);
+    c.innerHTML = `
+      <div class="layer-row">
+        ${[
+          ["earthquake","Deprem"],
+          ["flood","Sel"],
+          ["fire","Yangın"],
+          ["logistics","Lojistik"],
+          ["health","Sağlık"],
+          ["volunteer","Gönüllü"]
+        ].map(([id,label]) => `
+          <button class="layer ${currentLayer===id?'active':''}" onclick="setLayer('${id}')">${label}</button>
+        `).join("")}
+      </div>
 
-else if(currentPage==="volunteers"){
-title("Gönüllü Sistemi");
-c.innerHTML=`
-<div class="grid">
-<div class="card"><h3>Gönüllü Ekle</h3><input id="volName" placeholder="Ad Soyad"><input id="volCity" placeholder="İl"><input id="volSkill" placeholder="Yetkinlik"><button class="btn" onclick="addVolunteer()">Gönüllü Kaydet</button></div>
-<div class="card"><h3>Kayıtlı Gönüllüler</h3>${state.volunteers.length?state.volunteers.map(v=>`<div class="item"><b>${v.name}</b><br>${v.city}<br>${v.skill}<br>Durum: Aktif</div>`).join(""):"<p>Henüz gönüllü yok.</p>"}</div>
-</div>`;
-}
+      <div class="grid-2">
+        <div class="card">
+          <h3>${layerName(currentLayer)} Katmanı</h3>
+          <div class="map-box">
+            ${markers.map(m => `
+              <div class="marker" style="left:${m.x}%;top:${m.y}%;background:${m.color}" onclick="showMapInfo('${m.city}','${m.type}','${m.risk}','${m.note}')">
+                ${m.city}
+              </div>
+            `).join("")}
+          </div>
+        </div>
 
-else if(currentPage==="publicHealth"){
-title("Halk Sağlığı");
-c.innerHTML=`
-<div class="grid">
-<div class="card"><h3>Enfeksiyon Riski</h3><div class="big">%12</div></div>
-<div class="card"><h3>Su Güvenliği</h3><div class="big">%98</div></div>
-<div class="card"><h3>Aşılama Oranı</h3><div class="big">%84</div></div>
-<div class="card"><h3>Sağlık Hizmetlerinde Normalleşme</h3><div class="big">%71</div><p>Halk sağlığı izlem göstergesi.</p></div>
-</div>`;
-}
+        <div class="card" id="mapInfo">
+          <h3>Harita Bilgisi</h3>
+          <p>Aktif katman: <b>${layerName(currentLayer)}</b></p>
+          <p><b>Yozgat:</b> Pilot koordinasyon merkezi olarak izlenir.</p>
+          <p class="muted">Marker seçerek il bazlı risk detayını görüntüleyebilirsin.</p>
+          <button class="btn full" onclick="go('ai')">ARZ AI ile Analiz Et</button>
+        </div>
+      </div>
+    `;
+  }
 
-else if(currentPage==="reports"){
-title("Veri Raporları");
-c.innerHTML=`<div class="card"><h3>Raporlar</h3><button class="btn" onclick="createReport()">Yeni Rapor Oluştur</button><div style="margin-top:14px">${state.reports.length?state.reports.map(r=>`<div class="item"><b>${r.title}</b><br>${r.date}<br>${r.summary}</div>`).join(""):"<p>Henüz rapor yok.</p>"}</div></div>`;
-}
+  else if(currentPage === "logistics"){
+    setTitle("Lojistik ve Sevkiyat");
+    c.innerHTML = `
+      <div class="grid-2">
+        <div class="card">
+          <h3>Yeni Sevkiyat</h3>
+          <input id="shipName" placeholder="Sevkiyat adı">
+          <input id="from" placeholder="Çıkış noktası">
+          <input id="to" placeholder="Varış noktası">
+          <input id="vehicle" placeholder="Araç tipi / plaka">
+          <input id="driver" placeholder="Şoför / firma">
+          <textarea id="contentShip" placeholder="İçerik / miktar"></textarea>
+          <select id="priority">
+            <option>Kritik</option>
+            <option>Yüksek</option>
+            <option>Orta</option>
+            <option>Düşük</option>
+          </select>
+          <button class="btn full" onclick="addShipment()">Sevkiyat Ekle</button>
+        </div>
 
-else if(currentPage==="ai"){
-title("ARZ AI Akıllı Asistan");
-c.innerHTML=`
-<div class="card">
-<h3>ARZ AI</h3>
-<input id="soru" placeholder="Sorunuzu yazın...">
-<button class="btn" onclick="askAI()">Sor</button>
-<div class="answer" id="cevap">Cevap burada görünecek.</div>
-</div>`;
-}
+        <div class="card">
+          <h3>Aktif Sevkiyatlar</h3>
+          ${state.shipments.length ? state.shipments.slice().reverse().map(s => `
+            <div class="item">
+              <b>${s.name}</b><br>
+              ${s.from} → ${s.to}<br>
+              ${s.content}<br>
+              Araç: ${s.vehicle || "-"}<br>
+              Şoför/Firma: ${s.driver || "-"}<br>
+              Öncelik: <b>${s.priority}</b><br>
+              Durum: ${s.status}
+              <button class="btn secondary full" onclick="applyRoute('${s.id}')">Rotayı Uygula</button>
+            </div>
+          `).join("") : "<p class='muted'>Henüz sevkiyat yok.</p>"}
+        </div>
+      </div>
+    `;
+  }
 
-else if(currentPage==="settings"){
-title("Sistem Ayarları");
-c.innerHTML=`
-<div class="grid">
-<div class="card"><h3>Genel</h3><p>Offline mod, Local Brain ve demo sistem aktiftir.</p></div>
-<div class="card"><h3>Görünüm</h3><button class="btn" onclick="setTheme('afad')">AFAD</button><button class="btn" onclick="setTheme('kizilay')">Kızılay</button><button class="btn" onclick="setTheme('yesilay')">Yeşilay</button></div>
-<div class="card"><h3>Hakkında</h3><p><b>ARZ</b> afet raporlama, zamanlama, lojistik ve karar destek sistemidir.</p><p>Geliştirici: Şehmus AYKUT</p></div>
-</div>`;
-}
+  else if(currentPage === "scanner"){
+    setTitle("ARZ Tarama Merkezi");
+    c.innerHTML = `
+      <div class="grid-2">
+        <div class="card">
+          <h3>QR / Barkod / Kimlik / NFC</h3>
+          <p class="muted">Kamera destekliyse izin isteyerek açılır. Demo tarama her cihazda çalışır.</p>
+          <video id="camera" autoplay playsinline></video>
+          <button class="btn full" onclick="openCamera()">Kamerayı Aç</button>
+          <button class="btn secondary full" onclick="closeCamera()">Kamerayı Kapat</button>
+          <button class="btn full" onclick="demoQR()">Demo QR Tara</button>
+          <button class="btn full" onclick="demoNFC()">Demo NFC / Sağlık Kartı Oku</button>
+        </div>
+
+        <div class="card" id="scanResult">
+          <h3>Tarama Sonucu</h3>
+          <p>Henüz tarama yapılmadı.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  else if(currentPage === "volunteers"){
+    setTitle("Gönüllü Sistemi");
+    c.innerHTML = `
+      <div class="grid-2">
+        <div class="card">
+          <h3>Gönüllü Ekle</h3>
+          <input id="volName" placeholder="Ad Soyad">
+          <input id="volCity" placeholder="İl">
+          <input id="volSkill" placeholder="Yetkinlik">
+          <select id="volAvailable">
+            <option>Uygun</option>
+            <option>Görevde</option>
+            <option>Beklemede</option>
+          </select>
+          <button class="btn full" onclick="addVolunteer()">Gönüllü Kaydet</button>
+        </div>
+
+        <div class="card">
+          <h3>Kayıtlı Gönüllüler</h3>
+          ${state.volunteers.length ? state.volunteers.slice().reverse().map(v => `
+            <div class="item">
+              <b>${v.name}</b><br>
+              ${v.city}<br>
+              Yetkinlik: ${v.skill}<br>
+              Durum: ${v.available}
+              <button class="btn secondary full" onclick="assignVolunteer('${v.id}')">Görev Ata</button>
+            </div>
+          `).join("") : "<p class='muted'>Henüz gönüllü yok.</p>"}
+        </div>
+      </div>
+    `;
+  }
+
+  else if(currentPage === "field"){
+    setTitle("Saha Bildirimi");
+    c.innerHTML = `
+      <div class="grid-2">
+        <div class="card">
+          <h3>Yeni Saha Bildirimi</h3>
+          <select id="fieldType">
+            <option>Yaralı / Triaj</option>
+            <option>Su İhtiyacı</option>
+            <option>Gıda İhtiyacı</option>
+            <option>Yol Kapalı</option>
+            <option>Barınma İhtiyacı</option>
+          </select>
+          <input id="fieldCity" placeholder="İl / İlçe">
+          <select id="fieldPriority">
+            <option>Kritik</option>
+            <option>Yüksek</option>
+            <option>Orta</option>
+            <option>Düşük</option>
+          </select>
+          <textarea id="fieldNote" placeholder="Açıklama"></textarea>
+          <button class="btn full" onclick="addFieldReport()">Bildirimi Kaydet</button>
+        </div>
+
+        <div class="card">
+          <h3>Son Bildirimler</h3>
+          ${state.fieldReports.length ? state.fieldReports.slice().reverse().map(r => `
+            <div class="item"><b>${r.type}</b><br>${r.city} • ${r.priority}<br>${r.note}</div>
+          `).join("") : "<p class='muted'>Henüz bildirim yok.</p>"}
+        </div>
+      </div>
+    `;
+  }
+
+  else if(currentPage === "publicHealth"){
+    setTitle("Halk Sağlığı");
+    c.innerHTML = `
+      <div class="grid">
+        <div class="card"><h3>Enfeksiyon Riski</h3><div class="big">%12</div><p class="muted">Düşük-orta izlem</p></div>
+        <div class="card"><h3>Su Güvenliği</h3><div class="big">%98</div><p class="muted">Klorlama yeterli</p></div>
+        <div class="card"><h3>Aşılama Oranı</h3><div class="big">%84</div><p class="muted">Mobil ekip takibi</p></div>
+        <div class="card"><h3>Sağlık Hizmetlerinde Normalleşme</h3><div class="big">%71</div><p class="muted">Halk sağlığı izlem göstergesi</p></div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <h3>Stratejik Müdahale Planı</h3>
+        <div class="item"><b>Şebeke Suyu Klorlama</b><br>Kritik öncelik</div>
+        <div class="item"><b>Mobil Aşılama</b><br>Yüksek öncelik</div>
+        <div class="item"><b>Gıda Hijyeni Denetimi</b><br>Orta öncelik</div>
+      </div>
+    `;
+  }
+
+  else if(currentPage === "reports"){
+    setTitle("Veri Raporları");
+    c.innerHTML = `
+      <div class="card">
+        <h3>Raporlar</h3>
+        <button class="btn" onclick="createReport()">Yeni Rapor Oluştur</button>
+        <button class="btn secondary" onclick="exportReports()">JSON Göster</button>
+        <div style="margin-top:14px">
+          ${state.reports.length ? state.reports.slice().reverse().map(r => `
+            <div class="item">
+              <b>${r.title}</b><br>
+              ${r.date}<br>
+              ${r.summary}
+              <button class="btn secondary full" onclick="viewReport('${r.id}')">Detay Gör</button>
+            </div>
+          `).join("") : "<p class='muted'>Henüz rapor yok.</p>"}
+        </div>
+      </div>
+    `;
+  }
+
+  else if(currentPage === "ai"){
+    setTitle("ARZ AI Akıllı Asistan");
+    c.innerHTML = `
+      <div class="card">
+        <h3>ARZ AI Local Brain</h3>
+        <p class="muted">Bu sürüm ücretsiz yerel karar destek mantığıyla çalışır. API kredisi istemez.</p>
+        <div class="chips">
+          ${["Depremde ilk 72 saat ne yapılmalı?","Hatay’a sevkiyat nasıl planlanır?","Sel sonrası halk sağlığı riskleri nelerdir?","Afet sonrası triyaj nasıl yapılır?","Yozgat pilot modeli nasıl olur?"].map(q => `
+            <button class="chip" onclick="quickAsk('${q}')">${q}</button>
+          `).join("")}
+        </div>
+        <input id="soru" placeholder="Sorunuzu yazın...">
+        <button class="btn" onclick="askAI()">Sor</button>
+        <div class="ai-box" id="cevap">Cevap burada görünecek.</div>
+      </div>
+    `;
+  }
+
+  else if(currentPage === "settings"){
+    setTitle("Sistem Ayarları");
+    renderSettings();
+  }
 }
 
 function getMarkers(layer){
-const data={
-earthquake:[["İstanbul",30,35,"Deprem","Kritik","#dc2626"],["Hatay",55,70,"Deprem","Kritik","#dc2626"],["Kahramanmaraş",60,62,"Deprem","Yüksek","#f97316"]],
-flood:[["Rize",76,28,"Sel","Yüksek","#0284c7"],["Antalya",42,78,"Sel","Orta","#0ea5e9"],["Trabzon",72,30,"Sel","Yüksek","#0284c7"]],
-fire:[["Muğla",32,78,"Yangın","Kritik","#ea580c"],["Antalya",43,78,"Yangın","Yüksek","#f97316"],["İzmir",25,62,"Yangın","Orta","#fb923c"]],
-logistics:[["Ankara",45,50,"Lojistik","Merkez","#16a34a"],["Yozgat",52,48,"Pilot Merkez","Aktif","#16a34a"],["Hatay",55,70,"Sevkiyat","Kritik","#16a34a"]],
-health:[["İstanbul",30,35,"Sağlık","Yoğun","#7c3aed"],["Ankara",45,50,"Sağlık","Aktif","#7c3aed"],["Hatay",55,70,"Sağlık","Kritik","#7c3aed"]]
-};
-return (data[layer]||data.earthquake).map(a=>({city:a[0],x:a[1],y:a[2],type:a[3],risk:a[4],color:a[5]}));
+  const data = {
+    earthquake:[
+      ["İstanbul",30,35,"Deprem","Kritik","#DC2626","Nüfus yoğunluğu ve yapı riski"],
+      ["Hatay",55,70,"Deprem","Kritik","#DC2626","Barınma ve sağlık ihtiyacı"],
+      ["Kahramanmaraş",60,62,"Deprem","Yüksek","#F97316","Artçı ve lojistik takip"]
+    ],
+    flood:[
+      ["Rize",76,28,"Sel","Yüksek","#0284C7","Yağış ve heyelan riski"],
+      ["Trabzon",72,30,"Sel","Yüksek","#0284C7","Dere yatağı riski"],
+      ["Antalya",42,78,"Sel","Orta","#0EA5E9","Ani yağış riski"]
+    ],
+    fire:[
+      ["Muğla",32,78,"Yangın","Kritik","#EA580C","Orman yangını riski"],
+      ["Antalya",43,78,"Yangın","Yüksek","#F97316","Rüzgar ve sıcaklık etkisi"],
+      ["İzmir",25,62,"Yangın","Orta","#FB923C","Yerleşim yakınlığı"]
+    ],
+    logistics:[
+      ["Ankara",45,50,"Lojistik","Merkez","#16A34A","Ulusal koordinasyon"],
+      ["Yozgat",52,48,"Pilot Merkez","Aktif","#16A34A","Pilot bölge"],
+      ["Hatay",55,70,"Sevkiyat","Kritik","#16A34A","Yardım önceliği"]
+    ],
+    health:[
+      ["İstanbul",30,35,"Sağlık","Yoğun","#7C3AED","Hastane kapasitesi"],
+      ["Ankara",45,50,"Sağlık","Aktif","#7C3AED","Koordinasyon"],
+      ["Hatay",55,70,"Sağlık","Kritik","#7C3AED","Mobil klinik ihtiyacı"]
+    ],
+    volunteer:[
+      ["Yozgat",52,48,"Gönüllü","Aktif","#0891B2","Pilot gönüllü havuzu"],
+      ["Hatay",55,70,"Gönüllü","Yüksek","#0891B2","Saha destek"],
+      ["Ankara",45,50,"Gönüllü","Merkez","#0891B2","Koordinasyon"]
+    ]
+  };
+  return (data[layer] || data.earthquake).map(a => ({
+    city:a[0], x:a[1], y:a[2], type:a[3], risk:a[4], color:a[5], note:a[6]
+  }));
 }
-function layerName(l){return {earthquake:"Deprem",flood:"Sel",fire:"Yangın",logistics:"Lojistik",health:"Sağlık"}[l]||"Harita"}
-function setLayer(l){currentLayer=l;render()}
-function showMapInfo(city,type,risk){document.getElementById("mapInfo").innerHTML=`<h3>${city}</h3><p>Tür: ${type}</p><p>Risk: <b>${risk}</b></p><p>ARZ AI önerisi: Bölge için saha bildirimi, lojistik ve sağlık koordinasyonu birlikte değerlendirilmelidir.</p>`}
+
+function layerName(l){
+  return {
+    earthquake:"Deprem",
+    flood:"Sel",
+    fire:"Yangın",
+    logistics:"Lojistik",
+    health:"Sağlık",
+    volunteer:"Gönüllü"
+  }[l] || "Harita";
+}
+
+function setLayer(layer){
+  currentLayer = layer;
+  localStorage.setItem("arz_layer", layer);
+  render();
+}
+
+function showMapInfo(city,type,risk,note){
+  $("mapInfo").innerHTML = `
+    <h3>${city}</h3>
+    <p><b>Tür:</b> ${type}</p>
+    <p><b>Risk:</b> ${risk}</p>
+    <p><b>Not:</b> ${note}</p>
+    <p><b>ARZ AI önerisi:</b> Bölge için saha bildirimi, lojistik ve sağlık koordinasyonu birlikte değerlendirilmelidir.</p>
+    <button class="btn full" onclick="go('ai')">ARZ AI ile Analiz Et</button>
+  `;
+}
 
 function addShipment(){
-const s={id:"S"+Date.now(),name:shipName.value||"Sevkiyat",from:from.value||"Ankara",to:to.value||"Hatay",vehicle:vehicle.value,content:contentShip.value||"Tıbbi malzeme",priority:priority.value,status:"Yolda"};
-state.shipments.push(s);save("arz_shipments",state.shipments);render();
+  const s = {
+    id:"S-" + Date.now(),
+    name:$("shipName").value || "Acil Sevkiyat",
+    from:$("from").value || "Ankara",
+    to:$("to").value || "Hatay",
+    vehicle:$("vehicle").value || "Tır",
+    driver:$("driver").value || "Demo Firma",
+    content:$("contentShip").value || "Tıbbi malzeme",
+    priority:$("priority").value,
+    status:"Yolda"
+  };
+  state.shipments.push(s);
+  save("arz_shipments", state.shipments);
+  render();
 }
-function applyRoute(id){const s=state.shipments.find(x=>x.id===id); if(s){s.status="Rota Uygulandı";save("arz_shipments",state.shipments);render();}}
-function addVolunteer(){const v={name:volName.value||"Gönüllü",city:volCity.value||"Yozgat",skill:volSkill.value||"Saha destek"};state.volunteers.push(v);save("arz_volunteers",state.volunteers);render();}
-function createReport(){const r={title:"ARZ Raporu #"+(state.reports.length+1),date:new Date().toLocaleString("tr-TR"),summary:"Demo afet durum raporu oluşturuldu."};state.reports.push(r);save("arz_reports",state.reports);go("reports");}
+
+function applyRoute(id){
+  const s = state.shipments.find(x => x.id === id);
+  if(s){
+    s.status = "Rota Uygulandı";
+    s.routeScore = Math.floor(70 + Math.random()*25);
+    save("arz_shipments", state.shipments);
+    openModal(`<h2>Rota Uygulandı</h2><p>${s.from} → ${s.to}</p><p>Rota güvenlik skoru: <b>${s.routeScore}</b></p>`);
+    render();
+  }
+}
+
+function addVolunteer(){
+  const v = {
+    id:"V-" + Date.now(),
+    name:$("volName").value || "Demo Gönüllü",
+    city:$("volCity").value || "Yozgat",
+    skill:$("volSkill").value || "Saha destek",
+    available:$("volAvailable").value
+  };
+  state.volunteers.push(v);
+  save("arz_volunteers", state.volunteers);
+  render();
+}
+
+function assignVolunteer(id){
+  const v = state.volunteers.find(x => x.id === id);
+  if(v){
+    v.available = "Görevde";
+    save("arz_volunteers", state.volunteers);
+    render();
+  }
+}
+
+function addFieldReport(){
+  const r = {
+    id:"F-" + Date.now(),
+    type:$("fieldType").value,
+    city:$("fieldCity").value || "Hatay",
+    priority:$("fieldPriority").value,
+    note:$("fieldNote").value || "Demo saha bildirimi",
+    date:new Date().toLocaleString("tr-TR")
+  };
+  state.fieldReports.push(r);
+  save("arz_field_reports", state.fieldReports);
+  render();
+}
+
+function createReport(){
+  const r = {
+    id:"R-" + Date.now(),
+    title:"ARZ Operasyon Raporu #" + (state.reports.length + 1),
+    date:new Date().toLocaleString("tr-TR"),
+    summary:"Saha, lojistik, halk sağlığı ve harita verilerine göre demo rapor oluşturuldu."
+  };
+  state.reports.push(r);
+  save("arz_reports", state.reports);
+  go("reports");
+}
+
+function viewReport(id){
+  const r = state.reports.find(x => x.id === id);
+  if(r){
+    openModal(`<h2>${r.title}</h2><p>${r.date}</p><p>${r.summary}</p><pre>${JSON.stringify(r,null,2)}</pre>`);
+  }
+}
+
+function exportReports(){
+  openModal(`<h2>JSON Rapor Çıktısı</h2><pre>${JSON.stringify(state.reports,null,2)}</pre>`);
+}
 
 async function askAI(){
-const mesaj=document.getElementById("soru").value;
-const cevap=document.getElementById("cevap");
-cevap.innerText="ARZ AI düşünüyor...";
-try{
-const res=await fetch("/api/ask",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:mesaj})});
-const data=await res.json();
-cevap.innerText=data.answer||"Cevap alınamadı.";
-}catch(e){cevap.innerText="ARZ AI bağlantı hatası."}
+  const input = $("soru");
+  const cevap = $("cevap");
+  const mesaj = input.value.trim();
+  if(!mesaj){
+    cevap.innerText = "Lütfen bir soru yazın.";
+    return;
+  }
+
+  cevap.innerText = "ARZ AI düşünüyor...";
+
+  try{
+    const res = await fetch("/api/ask", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({message:mesaj})
+    });
+    const data = await res.json();
+    cevap.innerText = data.answer || "Cevap alınamadı.";
+
+    if(state.settings.aiMemory){
+      state.aiHistory.push({q:mesaj,a:data.answer,date:new Date().toISOString()});
+      save("arz_ai_history", state.aiHistory);
+    }
+  }catch(e){
+    cevap.innerText = "ARZ AI bağlantı hatası.";
+  }
 }
 
-let stream=null;
+function quickAsk(q){
+  $("soru").value = q;
+  askAI();
+}
+
 async function openCamera(){
-try{
-stream=await navigator.mediaDevices.getUserMedia({video:true,audio:false});
-document.getElementById("camera").srcObject=stream;
-}catch(e){alert("Kamera izni alınamadı veya cihaz desteklemiyor.")}
+  try{
+    cameraStream = await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}, audio:false});
+    $("camera").srcObject = cameraStream;
+  }catch(e){
+    openModal("<h2>Kamera Açılamadı</h2><p>Kamera için HTTPS ve tarayıcı izni gerekir. Bu cihaz veya tarayıcı izin vermemiş olabilir.</p>");
+  }
 }
-function closeCamera(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}}
+
+function closeCamera(){
+  if(cameraStream){
+    cameraStream.getTracks().forEach(t => t.stop());
+    cameraStream = null;
+  }
+}
+
 function demoQR(){
-document.getElementById("scanResult").innerHTML=`<h3>Doğrulandı</h3><p><b>AFAD-AID-2026-TR-0982</b></p><p>Tıbbi Malzeme Konteyneri</p><p>Bölge: Hatay / Kırıkhan</p><button class="btn" onclick="go('logistics')">Lojistiğe Aktar</button>`;
+  $("scanResult").innerHTML = `
+    <h3>QR Doğrulandı</h3>
+    <div class="item">
+      <b>AFAD-AID-2026-TR-0982</b><br>
+      Tıbbi Malzeme Konteyneri<br>
+      Bölge: Hatay / Kırıkhan<br>
+      Öncelik: Kritik
+    </div>
+    <button class="btn full" onclick="qrToShipment()">Lojistiğe Aktar</button>
+    <button class="btn secondary full" onclick="go('map')">Haritada Göster</button>
+  `;
 }
-function setTheme(t){
-if(t==="kizilay"){document.documentElement.style.setProperty("--primary","#7f1d1d");document.documentElement.style.setProperty("--accent","#dc2626")}
-if(t==="yesilay"){document.documentElement.style.setProperty("--primary","#065f46");document.documentElement.style.setProperty("--accent","#22c55e")}
-if(t==="afad"){document.documentElement.style.setProperty("--primary","#0b2d5c");document.documentElement.style.setProperty("--accent","#e53935")}
+
+function qrToShipment(){
+  state.shipments.push({
+    id:"QR-" + Date.now(),
+    name:"QR Sevkiyat",
+    from:"Ankara",
+    to:"Hatay / Kırıkhan",
+    vehicle:"Tır",
+    driver:"AFAD Demo",
+    content:"Tıbbi Malzeme Konteyneri",
+    priority:"Kritik",
+    status:"QR ile doğrulandı"
+  });
+  save("arz_shipments", state.shipments);
+  go("logistics");
+}
+
+function demoNFC(){
+  $("scanResult").innerHTML = `
+    <h3>NFC / Sağlık Kartı Okundu</h3>
+    <div class="item">
+      Kart Türü: Sağlık Kartı<br>
+      Kan Grubu: A Rh+<br>
+      Alerji: Yok<br>
+      Kronik Hastalık: Hipertansiyon<br>
+      Acil Not: Düzenli ilaç kullanıyor
+    </div>
+    <button class="btn full" onclick="go('publicHealth')">Halk Sağlığına Aktar</button>
+  `;
+}
+
+function renderSettings(){
+  const sections = [
+    ["general","Genel"],
+    ["accessibility","Erişilebilirlik"],
+    ["home","Ana Ekran"],
+    ["ai","ARZ AI Ayarları"],
+    ["notifications","Bildirimler"],
+    ["map","Harita Ayarları"],
+    ["security","Güvenlik ve Veri"],
+    ["about","Hakkında"]
+  ];
+
+  $("content").innerHTML = `
+    <div class="settings">
+      <div class="card settings-menu">
+        ${sections.map(([id,label]) => `
+          <button class="${selectedSetting===id?'active':''}" onclick="selectSetting('${id}')">${label}</button>
+        `).join("")}
+      </div>
+      <div class="card" id="settingsContent"></div>
+    </div>
+  `;
+  renderSettingContent();
+}
+
+function selectSetting(id){
+  selectedSetting = id;
+  renderSettings();
+}
+
+function toggleSetting(key){
+  state.settings[key] = !state.settings[key];
+  save("arz_settings", state.settings);
+  applySettings();
+  renderSettings();
+}
+
+function settingRow(key,label,desc){
+  return `
+    <div class="toggle-row">
+      <div>
+        <b>${label}</b><br>
+        <span class="muted">${desc}</span>
+      </div>
+      <div class="switch ${state.settings[key]?'on':''}" onclick="toggleSetting('${key}')">
+        <div class="knob"></div>
+      </div>
+    </div>
+  `;
+}
+
+function renderSettingContent(){
+  const el = $("settingsContent");
+
+  if(selectedSetting === "general"){
+    el.innerHTML = `
+      <h2>Genel</h2>
+      ${settingRow("offlineMode","Offline Mod","Demo veriler cihazda saklanır.")}
+      ${settingRow("localBrain","Local Brain","Ücretsiz yerel karar destek motoru.")}
+      ${settingRow("storeReports","Raporları Sakla","Raporları localStorage içinde tutar.")}
+    `;
+  } else if(selectedSetting === "accessibility"){
+    el.innerHTML = `
+      <h2>Erişilebilirlik</h2>
+      ${settingRow("boldText","Kalın Metin","Yazıları daha belirgin yapar.")}
+      ${settingRow("highContrast","Yüksek Kontrast","Kart ve metin kontrastını artırır.")}
+      ${settingRow("largeButtons","Büyük Butonlar","Butonları daha büyük hale getirir.")}
+    `;
+  } else if(selectedSetting === "ai"){
+    el.innerHTML = `
+      <h2>ARZ AI Ayarları</h2>
+      ${settingRow("aiMemory","AI Hafızası","Soru-cevap geçmişini cihazda saklar.")}
+      ${settingRow("localBrain","Local Brain","API kullanmadan cevap üretir.")}
+    `;
+  } else if(selectedSetting === "notifications"){
+    el.innerHTML = `
+      <h2>Bildirimler</h2>
+      ${settingRow("notifications","Bildirimleri Aç","Demo bildirim altyapısı.")}
+      ${settingRow("emergencySos","Acil SOS","Acil durum protokol rozeti aktif kalır.")}
+    `;
+  } else if(selectedSetting === "map"){
+    el.innerHTML = `
+      <h2>Harita Ayarları</h2>
+      ${settingRow("mapLive","Canlı Veri Simülasyonu","Harita modülünde demo canlı veri gösterir.")}
+      ${settingRow("offlineMode","Offline Harita Demo","Veriler cihazda saklanır.")}
+    `;
+  } else if(selectedSetting === "security"){
+    el.innerHTML = `
+      <h2>Güvenlik ve Veri</h2>
+      <p class="muted">Bu demo sürümde veriler tarayıcı localStorage alanında tutulur.</p>
+      <button class="btn secondary" onclick="localStorage.clear();location.reload()">Tüm Demo Verileri Temizle</button>
+    `;
+  } else if(selectedSetting === "about"){
+    el.innerHTML = `
+      <h2>ARZ Hakkında</h2>
+      <p><b>ARZ - Afet Raporlama ve Zamanlama</b>, afet durumlarında saha bildirimi, lojistik, harita, halk sağlığı ve karar destek süreçlerini birleştiren demo sistemdir.</p>
+      <p><b>Geliştirici:</b> Şehmus AYKUT</p>
+      <p><b>Slogan:</b> Doğru Veri, Doğru Zaman, Doğru Müdahale.</p>
+      <p><b>Sürüm:</b> v5.1.1 Local Brain Demo</p>
+    `;
+  } else {
+    el.innerHTML = `<h2>Ayarlar</h2><p>Bu bölüm için demo ayarlar hazırlanıyor.</p>`;
+  }
+}
+
+function applySettings(){
+  document.body.style.fontWeight = state.settings.boldText ? "700" : "400";
+  document.body.style.filter = state.settings.highContrast ? "contrast(1.12)" : "none";
+  document.querySelectorAll(".btn").forEach(b => {
+    b.style.padding = state.settings.largeButtons ? "15px 17px" : "";
+  });
 }
 
 navRender();
+applySettings();
 render();
 </script>
 </body>
