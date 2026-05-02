@@ -17,66 +17,54 @@ export default async function handler(req, res) {
 
     let answer = "";
 
-    if (
-      q.includes("deprem") ||
-      q.includes("enkaz") ||
-      q.includes("artçı") ||
-      q.includes("sarsıntı")
-    ) {
+    if (q.includes("deprem") || q.includes("enkaz") || q.includes("artçı")) {
       answer = `ARZ Local Brain Analizi – Deprem
 
+1. Genel Durum:
 Deprem sonrası ilk 72 saat; arama-kurtarma, triyaj, barınma, temiz su, gıda, haberleşme ve lojistik açısından en kritik dönemdir.
 
-Öncelikli aksiyonlar:
-1. Önce can güvenliği sağlanmalı ve güvenli toplanma alanı belirlenmelidir.
-2. Yaralılar triyaj sistemiyle hafif, orta, ağır ve kritik olarak sınıflandırılmalıdır.
-3. Enkaz, yangın, gaz kaçağı, bina hasarı ve yol kapanmaları ayrı ayrı raporlanmalıdır.
-4. Su, gıda, battaniye, çadır ve tıbbi malzeme ihtiyacı hızlıca kaydedilmelidir.
-5. Kritik bölgeler harita üzerinde işaretlenmeli ve sevkiyat önceliği buna göre verilmelidir.
+2. Öncelikli Aksiyonlar:
+- Güvenli toplanma alanı belirlenmeli.
+- Yaralılar triyaj sistemiyle sınıflandırılmalı.
+- Enkaz, gaz kaçağı, yangın ve yol kapanmaları ayrı raporlanmalı.
+- Su, gıda, battaniye, çadır ve tıbbi malzeme ihtiyacı kaydedilmeli.
+- Kritik bölgeler haritada işaretlenmeli.
 
-ARZ önerisi:
+3. ARZ Önerisi:
 Saha bildirimi, harita, lojistik, klinik destek ve halk sağlığı modülleri birlikte kullanılmalıdır. İlk aşamada can kaybını azaltacak triyaj ve ulaşım koridoru yönetimi önceliklendirilmelidir.`;
     }
 
-    else if (
-      q.includes("sel") ||
-      q.includes("taşkın") ||
-      q.includes("su baskını") ||
-      q.includes("yağış")
-    ) {
+    else if (q.includes("sel") || q.includes("taşkın") || q.includes("su baskını")) {
       answer = `ARZ Local Brain Analizi – Sel / Taşkın
 
+1. Genel Durum:
 Sel durumunda temiz suya erişim kaybı, kanalizasyon karışması, elektrik tehlikesi, yol kapanması ve tahliye ihtiyacı temel risklerdir.
 
-Öncelikli aksiyonlar:
-1. Dere yatakları, bodrum katlar ve düşük kotlu bölgeler hızla boşaltılmalıdır.
-2. İçme suyu güvenliği kontrol edilmeli ve şüpheli sular kullanılmamalıdır.
-3. Kapalı yollar ve riskli geçişler lojistik sistemine işlenmelidir.
-4. Çocuklar, yaşlılar, gebeler, engelliler ve kronik hastalar öncelikli tahliye edilmelidir.
-5. Geçici barınma alanlarında hijyen ve atık yönetimi sağlanmalıdır.
+2. Öncelikli Aksiyonlar:
+- Dere yatakları, bodrum katlar ve düşük kotlu bölgeler boşaltılmalı.
+- İçme suyu güvenliği kontrol edilmeli.
+- Kapalı yollar lojistik sistemine işlenmeli.
+- Çocuklar, yaşlılar, gebeler ve kronik hastalar öncelikli tahliye edilmeli.
+- Geçici barınma alanlarında hijyen ve atık yönetimi sağlanmalı.
 
-Halk sağlığı notu:
+3. Halk Sağlığı Notu:
 Sel sonrası ishal, cilt enfeksiyonları, su kaynaklı bulaşıcı hastalıklar ve hijyen sorunları açısından aktif izlem yapılmalıdır.`;
     }
 
-    else if (
-      q.includes("yangın") ||
-      q.includes("orman") ||
-      q.includes("duman") ||
-      q.includes("yanık")
-    ) {
+    else if (q.includes("yangın") || q.includes("orman") || q.includes("duman")) {
       answer = `ARZ Local Brain Analizi – Yangın
 
+1. Genel Durum:
 Yangın yönetiminde rüzgar yönü, sıcaklık, tahliye koridorları, yerleşim yerine yakınlık ve solunum riski kritik önemdedir.
 
-Öncelikli aksiyonlar:
-1. Rüzgar yönüne göre güvenli tahliye planı yapılmalıdır.
-2. Duman maruziyeti olanlar sağlık ekiplerine yönlendirilmelidir.
-3. Yanık vakaları klinik destek modülüne kaydedilmelidir.
-4. Lojistikte su, maske, serum, yanık seti ve oksijen desteği önceliklendirilmelidir.
-5. Gönüllüler yalnızca güvenli alanlarda görevlendirilmelidir.
+2. Öncelikli Aksiyonlar:
+- Rüzgar yönüne göre güvenli tahliye planı yapılmalı.
+- Duman maruziyeti olanlar sağlık ekiplerine yönlendirilmeli.
+- Yanık vakaları klinik destek modülüne kaydedilmeli.
+- Lojistikte su, maske, serum, yanık seti ve oksijen desteği önceliklendirilmelidir.
+- Gönüllüler yalnızca güvenli alanlarda görevlendirilmelidir.
 
-ARZ önerisi:
+3. ARZ Önerisi:
 Yangın bölgesi haritada turuncu/kırmızı riskle gösterilmeli; sağlık, lojistik ve tahliye ekipleri aynı operasyon ekranında takip edilmelidir.`;
     }
 
@@ -84,24 +72,24 @@ Yangın bölgesi haritada turuncu/kırmızı riskle gösterilmeli; sağlık, loj
       q.includes("lojistik") ||
       q.includes("sevkiyat") ||
       q.includes("tır") ||
-      q.includes("kamyon") ||
       q.includes("rota") ||
       q.includes("malzeme") ||
       q.includes("yardım")
     ) {
       answer = `ARZ Local Brain Analizi – Lojistik / Sevkiyat
 
+1. Genel Durum:
 Afet lojistiğinde sadece en kısa yol değil; yol güvenliği, trafik, hasarlı köprü/tünel, hava durumu, yakıt durumu ve ihtiyaç önceliği dikkate alınmalıdır.
 
-Sevkiyat planı:
-1. Çıkış noktası ve varış noktası net belirlenmelidir.
-2. İçerik sınıflandırılmalıdır: su, gıda, tıbbi malzeme, barınma, hijyen, enerji.
-3. Öncelik seviyesi atanmalıdır: düşük, orta, yüksek, kritik.
-4. Alternatif rota hazırlanmalı ve yol kapanmaları takip edilmelidir.
-5. Tahmini varış, gecikme riski ve güvenlik skoru izlenmelidir.
+2. Sevkiyat Planı:
+- Çıkış noktası ve varış noktası net belirlenir.
+- İçerik sınıflandırılır: su, gıda, tıbbi malzeme, barınma, hijyen, enerji.
+- Öncelik seviyesi atanır: düşük, orta, yüksek, kritik.
+- Alternatif rota hazırlanır.
+- Tahmini varış, gecikme riski ve güvenlik skoru izlenir.
 
-ARZ önerisi:
-Yeni sevkiyat kaydı oluşturulmalı, rota güvenlik skoru hesaplanmalı ve harita modülünde lojistik katmanı aktif edilmelidir. Kritik bölgelere giden sevkiyatlar ayrı izlenmelidir.`;
+3. ARZ Önerisi:
+Yeni sevkiyat kaydı oluşturulmalı, rota güvenlik skoru hesaplanmalı ve harita modülünde lojistik katmanı aktif edilmelidir.`;
     }
 
     else if (
@@ -109,23 +97,23 @@ Yeni sevkiyat kaydı oluşturulmalı, rota güvenlik skoru hesaplanmalı ve hari
       q.includes("yaralı") ||
       q.includes("hasta") ||
       q.includes("klinik") ||
-      q.includes("sağlık") ||
-      q.includes("hekim")
+      q.includes("sağlık")
     ) {
       answer = `ARZ Local Brain Analizi – Klinik Destek / Triyaj
 
-Afet sahasında triyaj, hastaların aciliyetine göre sınıflandırılmasıdır. Amaç, sınırlı sağlık kaynağını en fazla hayat kurtaracak şekilde kullanmaktır.
+1. Genel Durum:
+Afet sahasında triyaj, hastaların aciliyetine göre sınıflandırılmasıdır. Amaç sınırlı sağlık kaynağını en fazla hayat kurtaracak şekilde kullanmaktır.
 
-Öncelikli gruplar:
-1. Solunum sıkıntısı olanlar
-2. Aktif kanaması olanlar
-3. Bilinç değişikliği olanlar
-4. Şok bulgusu olanlar
-5. Çocuklar, gebeler ve yaşlılar
-6. Kronik hastalığı ve düzenli ilaç ihtiyacı olanlar
+2. Öncelikli Gruplar:
+- Solunum sıkıntısı olanlar
+- Aktif kanaması olanlar
+- Bilinç değişikliği olanlar
+- Şok bulgusu olanlar
+- Çocuklar, gebeler ve yaşlılar
+- Kronik hastalığı ve düzenli ilaç ihtiyacı olanlar
 
-ARZ önerisi:
-Klinik destek modülünde nabız, tansiyon, SpO2, ateş, bilinç durumu, kronik hastalık ve ilaç bilgisi girilmelidir. Sistem hasta için öncelik önerisi üretmelidir.
+3. ARZ Önerisi:
+Klinik destek modülünde nabız, tansiyon, SpO2, ateş, bilinç durumu, kronik hastalık ve ilaç bilgisi girilmelidir.
 
 Not:
 Bu değerlendirme karar destek amaçlıdır. Kesin tıbbi karar hekim tarafından verilmelidir.`;
@@ -142,105 +130,92 @@ Bu değerlendirme karar destek amaçlıdır. Kesin tıbbi karar hekim tarafında
     ) {
       answer = `ARZ Local Brain Analizi – Halk Sağlığı
 
+1. Genel Durum:
 Afet sonrası temiz su, sanitasyon, kalabalık barınma, gıda güvenliği, atık yönetimi ve bulaşıcı hastalık riski ön plana çıkar.
 
-İzlenecek göstergeler:
-1. Su güvenliği
-2. Klorlama durumu
-3. Aşılama oranı
-4. Enfeksiyon bildirimi
-5. Gıda hijyeni
-6. Barınma alanı yoğunluğu
-7. Sağlık hizmetlerinde normalleşme oranı
+2. İzlenecek Göstergeler:
+- Su güvenliği
+- Klorlama durumu
+- Aşılama oranı
+- Enfeksiyon bildirimi
+- Gıda hijyeni
+- Barınma alanı yoğunluğu
+- Sağlık hizmetlerinde normalleşme oranı
 
-ARZ önerisi:
+3. ARZ Önerisi:
 Halk sağlığı panelinde su güvenliği, enfeksiyon riski, aşılama oranı ve sağlık hizmetlerinde normalleşme oranı düzenli takip edilmelidir. Kritik bölgeler için mobil aşılama, hijyen denetimi ve temiz su planlaması yapılmalıdır.`;
     }
 
-    else if (
-      q.includes("gönüllü") ||
-      q.includes("ekip") ||
-      q.includes("görev")
-    ) {
+    else if (q.includes("gönüllü") || q.includes("ekip") || q.includes("görev")) {
       answer = `ARZ Local Brain Analizi – Gönüllü Yönetimi
 
+1. Genel Durum:
 Gönüllüler afet sahasında doğru görev, doğru alan ve doğru yetki ile görevlendirilmelidir. Kontrolsüz gönüllü hareketi operasyonu zorlaştırabilir.
 
-Görev dağılımı:
-1. Sağlık bilgisi olanlar sağlık destek alanına yönlendirilmelidir.
-2. Araç kullanabilenler lojistik desteğe alınabilir.
-3. Yerel bölgeyi bilenler saha yönlendirmede değerlendirilebilir.
-4. İletişim becerisi güçlü olanlar kayıt ve bilgilendirmeye alınabilir.
-5. Deneyimsiz gönüllüler güvenli alanlarda destek görevlerine verilmelidir.
+2. Görev Dağılımı:
+- Sağlık bilgisi olanlar sağlık destek alanına yönlendirilebilir.
+- Araç kullanabilenler lojistik desteğe alınabilir.
+- Yerel bölgeyi bilenler saha yönlendirmede değerlendirilebilir.
+- İletişim becerisi güçlü olanlar kayıt ve bilgilendirmeye alınabilir.
+- Deneyimsiz gönüllüler güvenli alanlarda destek görevlerine verilmelidir.
 
-ARZ önerisi:
+3. ARZ Önerisi:
 Gönüllü kaydı, yetkinlik filtresi ve görev atama sistemi birlikte kullanılmalıdır. Her gönüllünün görev, konum ve uygunluk durumu sistemde takip edilmelidir.`;
     }
 
-    else if (
-      q.includes("rapor") ||
-      q.includes("json") ||
-      q.includes("pdf") ||
-      q.includes("çıktı")
-    ) {
+    else if (q.includes("rapor") || q.includes("json") || q.includes("pdf")) {
       answer = `ARZ Local Brain Analizi – Raporlama
 
+1. Genel Durum:
 Afet raporunda olay yeri, zaman, afet türü, ihtiyaçlar, yaralı sayısı, yol durumu, saha bildirimi, lojistik durum ve halk sağlığı riski bulunmalıdır.
 
-Önerilen rapor formatı:
-1. Genel durum
-2. Kritik bölgeler
-3. İhtiyaç analizi
-4. Klinik durum
-5. Lojistik plan
-6. Halk sağlığı riski
-7. Gönüllü/ekip durumu
-8. İlk 3 operasyonel aksiyon
+2. Önerilen Format:
+- Genel durum
+- Kritik bölgeler
+- İhtiyaç analizi
+- Klinik durum
+- Lojistik plan
+- Halk sağlığı riski
+- Gönüllü/ekip durumu
+- İlk 3 operasyonel aksiyon
 
-ARZ önerisi:
+3. ARZ Önerisi:
 Raporlar karar destek panelinde kullanılmalı, operasyon sonrası değerlendirme için saklanmalı ve gerektiğinde JSON/PDF demo çıktısı üretilebilmelidir.`;
     }
 
-    else if (
-      q.includes("yozgat") ||
-      q.includes("bozok") ||
-      q.includes("pilot")
-    ) {
+    else if (q.includes("yozgat") || q.includes("bozok") || q.includes("pilot")) {
       answer = `ARZ Local Brain Analizi – Yozgat Pilot Modeli
 
+1. Genel Durum:
 Yozgat, ARZ sistemi için pilot koordinasyon merkezi olarak modellenebilir. Üniversite, tıp fakültesi, halk sağlığı birimi ve gönüllü öğrenci yapısı pilot uygulama için uygun bir çerçeve sunar.
 
-Pilot başlıklar:
-1. Üniversite kampüsü afet hazırlığı
-2. Tıp fakültesi gönüllü sağlık ekibi
-3. Halk sağlığı izlem göstergeleri
-4. Lojistik çıkış noktaları
-5. İl bazlı risk haritalama
-6. Tatbikat ve raporlama sistemi
-7. Sağlık hizmetlerinde normalleşme oranı takibi
+2. Pilot Başlıklar:
+- Üniversite kampüsü afet hazırlığı
+- Tıp fakültesi gönüllü sağlık ekibi
+- Halk sağlığı izlem göstergeleri
+- Lojistik çıkış noktaları
+- İl bazlı risk haritalama
+- Tatbikat ve raporlama sistemi
+- Sağlık hizmetlerinde normalleşme oranı takibi
 
-ARZ önerisi:
+3. ARZ Önerisi:
 Yozgat Bozok Üniversitesi Tıp Fakültesi ve Halk Sağlığı Anabilim Dalı üzerinden küçük ölçekli pilot veri seti oluşturulabilir. Bu yapı daha sonra il ve bölge düzeyine genişletilebilir.`;
     }
 
-    else if (
-      q.includes("nfc") ||
-      q.includes("qr") ||
-      q.includes("barkod") ||
-      q.includes("kimlik")
-    ) {
+    else if (q.includes("qr") || q.includes("nfc") || q.includes("barkod") || q.includes("kimlik")) {
       answer = `ARZ Local Brain Analizi – Tarama Merkezi
 
+1. Genel Durum:
 QR, barkod, kimlik ve NFC tabanlı tarama sistemi afet sahasında hızlı doğrulama için kullanılabilir.
 
-Kullanım alanları:
-1. Yardım kolisi veya sevkiyat etiketi doğrulama
-2. Gönüllü kartı kontrolü
-3. Hasta/sağlık kartı demo okuması
-4. Malzeme giriş-çıkış takibi
-5. Bölgeye gönderilen yardımın doğrulanması
+2. Kullanım Alanları:
+- Yardım kolisi veya sevkiyat etiketi doğrulama
+- Gönüllü kartı kontrolü
+- Hasta/sağlık kartı demo okuması
+- Malzeme giriş-çıkış takibi
+- Bölgeye gönderilen yardımın doğrulanması
 
-ARZ önerisi:
+3. ARZ Önerisi:
 Tarama Merkezi, lojistik ve klinik destek modülleriyle bağlantılı çalışmalıdır. QR ile okunan sevkiyat doğrudan lojistik listesine aktarılabilir.`;
     }
 
@@ -264,6 +239,7 @@ ARZ sisteminde olay önce saha bildirimi olarak kaydedilmeli; ardından harita, 
     }
 
     return res.status(200).json({ answer });
+
   } catch (error) {
     return res.status(500).json({
       answer: "ARZ Local Brain geçici hata verdi."
