@@ -33,6 +33,96 @@ body{
   overflow:hidden;
 }
 
+.auth-page{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:1fr 430px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(229,57,53,.16), transparent 28%),
+    radial-gradient(circle at 80% 30%, rgba(11,45,92,.18), transparent 30%),
+    linear-gradient(135deg,#F8FAFC,#E0F2FE);
+}
+
+.auth-left{
+  padding:60px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.auth-brand{
+  font-size:70px;
+  font-weight:950;
+  color:var(--primary);
+  letter-spacing:-5px;
+}
+
+.auth-brand span{color:var(--accent)}
+
+.auth-sub{
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:3px;
+  color:var(--muted);
+  text-transform:uppercase;
+}
+
+.auth-slogan{
+  margin-top:18px;
+  font-size:22px;
+  color:var(--primary);
+  font-weight:800;
+}
+
+.auth-desc{
+  max-width:680px;
+  margin-top:16px;
+  color:#334155;
+  line-height:1.7;
+}
+
+.auth-card-wrap{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+
+.auth-card{
+  width:100%;
+  max-width:410px;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:28px;
+  box-shadow:0 30px 80px rgba(15,23,42,.18);
+  padding:24px;
+}
+
+.auth-tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  background:#F1F5F9;
+  padding:6px;
+  border-radius:18px;
+  margin-bottom:16px;
+}
+
+.auth-tabs button{
+  border:0;
+  border-radius:14px;
+  padding:12px;
+  font-weight:900;
+  cursor:pointer;
+  background:transparent;
+  color:var(--muted);
+}
+
+.auth-tabs button.active{
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:white;
+}
+
 .app{
   display:grid;
   grid-template-columns:270px minmax(0,1fr);
@@ -73,6 +163,15 @@ body{
 
 .brand-slogan{
   margin-top:8px;
+  font-size:12px;
+  color:#E5E7EB;
+}
+
+.user-mini{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:16px;
+  padding:12px;
   font-size:12px;
   color:#E5E7EB;
 }
@@ -426,8 +525,13 @@ video{
   min-height:220px;
 }
 
+.hidden{display:none!important}
+
 @media(max-width:900px){
   body{overflow:auto}
+  .auth-page{grid-template-columns:1fr}
+  .auth-left{padding:34px 24px}
+  .auth-brand{font-size:56px}
   .app{grid-template-columns:1fr;height:auto;min-height:100vh}
   .sidebar{position:relative}
   .nav{display:grid;grid-template-columns:repeat(2,1fr)}
@@ -440,7 +544,53 @@ video{
 </head>
 
 <body>
-<div class="app">
+
+<div id="authPage" class="auth-page">
+  <section class="auth-left">
+    <div class="auth-brand">ARZ<span>.</span></div>
+    <div class="auth-sub">AFET RAPORLAMA VE ZAMANLAMA</div>
+    <div class="auth-slogan">Doğru Veri, Doğru Zaman, Doğru Müdahale.</div>
+    <p class="auth-desc">
+      ARZ; afet anında saha bildirimi, lojistik, halk sağlığı, harita, raporlama ve yapay zeka destekli karar destek modüllerini tek merkezde birleştiren kurumsal demo sistemidir.
+    </p>
+  </section>
+
+  <section class="auth-card-wrap">
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button id="loginTab" class="active" onclick="setAuthMode('login')">Giriş Yap</button>
+        <button id="registerTab" onclick="setAuthMode('register')">Kayıt Ol</button>
+      </div>
+
+      <div id="loginForm">
+        <h2>ARZ Giriş</h2>
+        <input id="loginEmail" placeholder="E-posta">
+        <input id="loginPassword" type="password" placeholder="Şifre">
+        <button class="btn full" onclick="handleLogin()">Giriş Yap</button>
+      </div>
+
+      <div id="registerForm" class="hidden">
+        <h2>ARZ Kayıt</h2>
+        <input id="regFullName" placeholder="Ad Soyad">
+        <input id="regEmail" placeholder="E-posta">
+        <input id="regPhone" placeholder="Telefon">
+        <input id="regPassword" type="password" placeholder="Şifre">
+        <select id="regRole">
+          <option value="citizen">Vatandaş / Afetzede</option>
+          <option value="doctor">Hekim / Sağlık Personeli</option>
+          <option value="logistics">Lojistik / Firma</option>
+          <option value="volunteer">Gönüllü</option>
+          <option value="admin">Yönetici / AFAD Operatörü</option>
+        </select>
+        <button class="btn full" onclick="handleRegister()">Kayıt Ol</button>
+      </div>
+
+      <p class="muted" id="authMessage"></p>
+    </div>
+  </section>
+</div>
+
+<div id="appPage" class="app hidden">
   <aside class="sidebar">
     <div class="brand">
       <div class="brand-title">ARZ<span>.</span></div>
@@ -448,12 +598,15 @@ video{
       <div class="brand-slogan">Doğru Veri, Doğru Zaman, Doğru Müdahale.</div>
     </div>
 
+    <div class="user-mini" id="userMini">Kullanıcı yükleniyor...</div>
+
     <nav class="nav" id="nav"></nav>
 
     <div class="sidebar-footer">
-      <b>ARZ Sistemi v5.1.1 Demo</b><br>
+      <b>ARZ Sistemi v5.2.0 Firebase</b><br>
       Şehmus AYKUT tarafından geliştirilmiştir.<br>
-      Local Brain ücretsiz mod aktiftir.
+      Firebase profil ve ayar sistemi aktiftir.
+      <button class="btn secondary full" onclick="handleLogout()">Çıkış Yap</button>
     </div>
   </aside>
 
@@ -462,8 +615,8 @@ video{
       <h1 id="pageTitle">Panel</h1>
       <div class="header-actions">
         <span class="badge red">Acil Durum Protokolü</span>
-        <span class="badge green">Local Brain</span>
-        <span class="badge orange">Offline Demo</span>
+        <span class="badge green">Firebase Aktif</span>
+        <span class="badge orange">Local Brain</span>
       </div>
     </header>
 
@@ -478,67 +631,53 @@ video{
   </div>
 </div>
 
-<script>
-const pages = [
-  ["panel","📊","Panel"],
-  ["map","🗺️","Harita"],
-  ["logistics","🚛","Lojistik"],
-  ["scanner","📷","Tarama Merkezi"],
-  ["volunteers","👥","Gönüllü Sistemi"],
-  ["field","📍","Saha Bildirimi"],
-  ["publicHealth","🧬","Halk Sağlığı"],
-  ["reports","📄","Raporlar"],
-  ["ai","🤖","ARZ AI"],
-  ["settings","⚙️","Ayarlar"]
-];
+<script type="module">
+import { registerUser, loginUser, logoutUser, listenAuth } from "./auth.js";
+import { getRole } from "./roles.js";
+import { t } from "./translations.js";
+import {
+  updateUserSettings,
+  addShipment as dbAddShipment,
+  listShipments,
+  addReport as dbAddReport,
+  listReports,
+  addAiHistory
+} from "./database.js";
+
+let authMode = "login";
+let currentUser = null;
+let currentProfile = null;
+let currentSettings = null;
 
 let currentPage = "panel";
 let currentLayer = localStorage.getItem("arz_layer") || "earthquake";
 let selectedSetting = "general";
 let cameraStream = null;
 
+const pageMeta = {
+  panel:["📊","Panel"],
+  map:["🗺️","Harita"],
+  logistics:["🚛","Lojistik"],
+  scanner:["📷","Tarama Merkezi"],
+  volunteers:["👥","Gönüllü Sistemi"],
+  field:["📍","Saha Bildirimi"],
+  publicHealth:["🧬","Halk Sağlığı"],
+  reports:["📄","Raporlar"],
+  ai:["🤖","ARZ AI"],
+  profile:["👤","Profil"],
+  settings:["⚙️","Ayarlar"]
+};
+
 const state = {
-  shipments: JSON.parse(localStorage.getItem("arz_shipments") || "[]"),
+  shipments: [],
+  reports: [],
   volunteers: JSON.parse(localStorage.getItem("arz_volunteers") || "[]"),
-  reports: JSON.parse(localStorage.getItem("arz_reports") || "[]"),
   fieldReports: JSON.parse(localStorage.getItem("arz_field_reports") || "[]"),
-  aiHistory: JSON.parse(localStorage.getItem("arz_ai_history") || "[]"),
-  settings: JSON.parse(localStorage.getItem("arz_settings") || "{}")
+  aiHistory: JSON.parse(localStorage.getItem("arz_ai_history") || "[]")
 };
 
-const defaultSettings = {
-  notifications:true,
-  localBrain:true,
-  offlineMode:true,
-  aiMemory:true,
-  boldText:false,
-  highContrast:false,
-  largeButtons:false,
-  mapLive:true,
-  emergencySos:true,
-  storeReports:true
-};
-
-state.settings = {...defaultSettings, ...state.settings};
-
-function save(key,value){ localStorage.setItem(key, JSON.stringify(value)); }
 function $(id){ return document.getElementById(id); }
-
-function navRender(){
-  $("nav").innerHTML = pages.map(([id,icon,label]) => `
-    <button class="${currentPage===id?'active':''}" onclick="go('${id}')">
-      <span>${icon}</span> ${label}
-    </button>
-  `).join("");
-}
-
-function go(page){
-  currentPage = page;
-  navRender();
-  render();
-}
-
-function setTitle(text){ $("pageTitle").innerText = text; }
+function saveLocal(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
 
 function openModal(html){
   $("modalContent").innerHTML = html;
@@ -548,6 +687,143 @@ function openModal(html){
 function closeModal(){
   $("modal").classList.remove("show");
 }
+
+function setAuthMode(mode){
+  authMode = mode;
+  $("loginTab").classList.toggle("active", mode === "login");
+  $("registerTab").classList.toggle("active", mode === "register");
+  $("loginForm").classList.toggle("hidden", mode !== "login");
+  $("registerForm").classList.toggle("hidden", mode !== "register");
+  $("authMessage").innerText = "";
+}
+
+async function handleRegister(){
+  try{
+    $("authMessage").innerText = "Kayıt oluşturuluyor...";
+
+    const result = await registerUser({
+      email: $("regEmail").value.trim(),
+      password: $("regPassword").value,
+      fullName: $("regFullName").value.trim(),
+      phone: $("regPhone").value.trim(),
+      role: $("regRole").value,
+      city: "",
+      institution: "Yozgat Bozok Üniversitesi Tıp Fakültesi",
+      department: "Halk Sağlığı Anabilim Dalı"
+    });
+
+    $("authMessage").innerText = "Kayıt başarılı. Panel açılıyor...";
+  }catch(e){
+    $("authMessage").innerText = "Kayıt hatası: " + e.message;
+  }
+}
+
+async function handleLogin(){
+  try{
+    $("authMessage").innerText = "Giriş yapılıyor...";
+
+    await loginUser(
+      $("loginEmail").value.trim(),
+      $("loginPassword").value
+    );
+
+    $("authMessage").innerText = "Giriş başarılı.";
+  }catch(e){
+    $("authMessage").innerText = "Giriş hatası: " + e.message;
+  }
+}
+
+async function handleLogout(){
+  await logoutUser();
+}
+
+async function bootApp(session){
+  currentUser = session.user;
+  currentProfile = session.profile;
+  currentSettings = session.settings || {
+    language:"tr",
+    theme:"afad",
+    aiMemory:true,
+    notificationsEnabled:true,
+    accessibilitySettings:{}
+  };
+
+  applyTheme(currentSettings.theme || "afad");
+  applyAccessibility(currentSettings.accessibilitySettings || {});
+
+  $("authPage").classList.add("hidden");
+  $("appPage").classList.remove("hidden");
+
+  await loadCloudData();
+
+  const role = getRole(currentProfile?.role || "citizen");
+  if(!role.pages.includes(currentPage)){
+    currentPage = role.pages[0] || "panel";
+  }
+
+  renderUserMini();
+  navRender();
+  render();
+}
+
+function showAuth(){
+  $("authPage").classList.remove("hidden");
+  $("appPage").classList.add("hidden");
+  currentUser = null;
+  currentProfile = null;
+  currentSettings = null;
+}
+
+async function loadCloudData(){
+  try{
+    state.shipments = await listShipments(currentUser.uid);
+  }catch{
+    state.shipments = [];
+  }
+
+  try{
+    state.reports = await listReports(currentUser.uid);
+  }catch{
+    state.reports = [];
+  }
+}
+
+function renderUserMini(){
+  const role = getRole(currentProfile?.role || "citizen");
+  $("userMini").innerHTML = `
+    <b>${currentProfile?.fullName || currentProfile?.full_name || currentUser?.email}</b><br>
+    ${role.label}<br>
+    <span style="color:#CBD5E1">${currentUser?.email || ""}</span>
+  `;
+}
+
+function navRender(){
+  const role = getRole(currentProfile?.role || "citizen");
+  const allowed = role.pages || ["panel"];
+
+  $("nav").innerHTML = allowed.map(id => {
+    const meta = pageMeta[id] || ["▫️", id];
+    return `
+      <button class="${currentPage===id?'active':''}" onclick="go('${id}')">
+        <span>${meta[0]}</span> ${meta[1]}
+      </button>
+    `;
+  }).join("");
+}
+
+function go(page){
+  const role = getRole(currentProfile?.role || "citizen");
+  if(!role.pages.includes(page)){
+    openModal("<h2>Yetkisiz Modül</h2><p>Bu rol bu modüle erişemez.</p>");
+    return;
+  }
+
+  currentPage = page;
+  navRender();
+  render();
+}
+
+function setTitle(text){ $("pageTitle").innerText = text; }
 
 function render(){
   const c = $("content");
@@ -565,13 +841,13 @@ function render(){
         <div class="card">
           <h3>Lojistik Akış</h3>
           <div class="big">${state.shipments.length}</div>
-          <p class="muted">Aktif kayıtlı sevkiyat</p>
+          <p class="muted">Hesabına kayıtlı sevkiyat</p>
           <button class="btn full" onclick="go('logistics')">Yeni Sevkiyat</button>
         </div>
         <div class="card">
           <h3>Gönüllü Yönetimi</h3>
           <div class="big">${state.volunteers.length}</div>
-          <p class="muted">Kayıtlı gönüllü</p>
+          <p class="muted">Yerel kayıtlı gönüllü</p>
           <button class="btn full" onclick="go('volunteers')">Gönüllü Ekle</button>
         </div>
         <div class="card">
@@ -670,11 +946,11 @@ function render(){
           <h3>Aktif Sevkiyatlar</h3>
           ${state.shipments.length ? state.shipments.slice().reverse().map(s => `
             <div class="item">
-              <b>${s.name}</b><br>
-              ${s.from} → ${s.to}<br>
-              ${s.content}<br>
-              Araç: ${s.vehicle || "-"}<br>
-              Şoför/Firma: ${s.driver || "-"}<br>
+              <b>${s.title || s.name}</b><br>
+              ${s.from_location || s.from} → ${s.to_location || s.to}<br>
+              ${s.content || ""}<br>
+              Araç: ${s.vehicle_type || s.vehicle || "-"}<br>
+              Şoför/Firma: ${s.driver_company || s.driver || "-"}<br>
               Öncelik: <b>${s.priority}</b><br>
               Durum: ${s.status}
               <button class="btn secondary full" onclick="applyRoute('${s.id}')">Rotayı Uygula</button>
@@ -804,8 +1080,8 @@ function render(){
           ${state.reports.length ? state.reports.slice().reverse().map(r => `
             <div class="item">
               <b>${r.title}</b><br>
-              ${r.date}<br>
-              ${r.summary}
+              ${r.created_at ? new Date(r.created_at).toLocaleString("tr-TR") : (r.date || "")}<br>
+              ${r.summary || ""}
               <button class="btn secondary full" onclick="viewReport('${r.id}')">Detay Gör</button>
             </div>
           `).join("") : "<p class='muted'>Henüz rapor yok.</p>"}
@@ -828,6 +1104,28 @@ function render(){
         <input id="soru" placeholder="Sorunuzu yazın...">
         <button class="btn" onclick="askAI()">Sor</button>
         <div class="ai-box" id="cevap">Cevap burada görünecek.</div>
+      </div>
+    `;
+  }
+
+  else if(currentPage === "profile"){
+    setTitle("Profil");
+    c.innerHTML = `
+      <div class="grid-2">
+        <div class="card">
+          <h3>Profil Bilgileri</h3>
+          <input id="profileFullName" value="${currentProfile?.fullName || ""}" placeholder="Ad Soyad">
+          <input id="profilePhone" value="${currentProfile?.phone || ""}" placeholder="Telefon">
+          <input id="profileCity" value="${currentProfile?.city || ""}" placeholder="Şehir">
+          <input id="profileInstitution" value="${currentProfile?.institution || ""}" placeholder="Kurum">
+          <button class="btn full" onclick="saveProfile()">Profili Kaydet</button>
+        </div>
+        <div class="card">
+          <h3>Rol ve Arayüz</h3>
+          <p><b>Rol:</b> ${getRole(currentProfile?.role || "citizen").label}</p>
+          <p><b>E-posta:</b> ${currentUser?.email || ""}</p>
+          <p class="muted">Menüler rolüne göre otomatik belirlenir.</p>
+        </div>
       </div>
     `;
   }
@@ -904,10 +1202,9 @@ function showMapInfo(city,type,risk,note){
   `;
 }
 
-function addShipment(){
-  const s = {
-    id:"S-" + Date.now(),
-    name:$("shipName").value || "Acil Sevkiyat",
+async function addShipment(){
+  const payload = {
+    title:$("shipName").value || "Acil Sevkiyat",
     from:$("from").value || "Ankara",
     to:$("to").value || "Hatay",
     vehicle:$("vehicle").value || "Tır",
@@ -916,20 +1213,24 @@ function addShipment(){
     priority:$("priority").value,
     status:"Yolda"
   };
-  state.shipments.push(s);
-  save("arz_shipments", state.shipments);
+
+  const docRef = await dbAddShipment(currentUser.uid, {
+    title:payload.title,
+    from_location:payload.from,
+    to_location:payload.to,
+    vehicle_type:payload.vehicle,
+    driver_company:payload.driver,
+    content:payload.content,
+    priority:payload.priority,
+    status:payload.status
+  });
+
+  state.shipments = await listShipments(currentUser.uid);
   render();
 }
 
 function applyRoute(id){
-  const s = state.shipments.find(x => x.id === id);
-  if(s){
-    s.status = "Rota Uygulandı";
-    s.routeScore = Math.floor(70 + Math.random()*25);
-    save("arz_shipments", state.shipments);
-    openModal(`<h2>Rota Uygulandı</h2><p>${s.from} → ${s.to}</p><p>Rota güvenlik skoru: <b>${s.routeScore}</b></p>`);
-    render();
-  }
+  openModal(`<h2>Rota Uygulandı</h2><p>Sevkiyat için demo rota güvenlik skoru: <b>${Math.floor(70 + Math.random()*25)}</b></p>`);
 }
 
 function addVolunteer(){
@@ -941,7 +1242,7 @@ function addVolunteer(){
     available:$("volAvailable").value
   };
   state.volunteers.push(v);
-  save("arz_volunteers", state.volunteers);
+  saveLocal("arz_volunteers", state.volunteers);
   render();
 }
 
@@ -949,7 +1250,7 @@ function assignVolunteer(id){
   const v = state.volunteers.find(x => x.id === id);
   if(v){
     v.available = "Görevde";
-    save("arz_volunteers", state.volunteers);
+    saveLocal("arz_volunteers", state.volunteers);
     render();
   }
 }
@@ -964,26 +1265,29 @@ function addFieldReport(){
     date:new Date().toLocaleString("tr-TR")
   };
   state.fieldReports.push(r);
-  save("arz_field_reports", state.fieldReports);
+  saveLocal("arz_field_reports", state.fieldReports);
   render();
 }
 
-function createReport(){
-  const r = {
-    id:"R-" + Date.now(),
+async function createReport(){
+  await dbAddReport(currentUser.uid, {
     title:"ARZ Operasyon Raporu #" + (state.reports.length + 1),
-    date:new Date().toLocaleString("tr-TR"),
-    summary:"Saha, lojistik, halk sağlığı ve harita verilerine göre demo rapor oluşturuldu."
-  };
-  state.reports.push(r);
-  save("arz_reports", state.reports);
+    type:"operation",
+    summary:"Saha, lojistik, halk sağlığı ve harita verilerine göre demo rapor oluşturuldu.",
+    contentJson:{
+      shipments: state.shipments.length,
+      fieldReports: state.fieldReports.length
+    }
+  });
+
+  state.reports = await listReports(currentUser.uid);
   go("reports");
 }
 
 function viewReport(id){
   const r = state.reports.find(x => x.id === id);
   if(r){
-    openModal(`<h2>${r.title}</h2><p>${r.date}</p><p>${r.summary}</p><pre>${JSON.stringify(r,null,2)}</pre>`);
+    openModal(`<h2>${r.title}</h2><p>${r.summary || ""}</p><pre>${JSON.stringify(r,null,2)}</pre>`);
   }
 }
 
@@ -995,6 +1299,7 @@ async function askAI(){
   const input = $("soru");
   const cevap = $("cevap");
   const mesaj = input.value.trim();
+
   if(!mesaj){
     cevap.innerText = "Lütfen bir soru yazın.";
     return;
@@ -1008,12 +1313,16 @@ async function askAI(){
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({message:mesaj})
     });
+
     const data = await res.json();
     cevap.innerText = data.answer || "Cevap alınamadı.";
 
-    if(state.settings.aiMemory){
-      state.aiHistory.push({q:mesaj,a:data.answer,date:new Date().toISOString()});
-      save("arz_ai_history", state.aiHistory);
+    if(currentSettings?.aiMemory){
+      await addAiHistory(currentUser.uid, {
+        question:mesaj,
+        answer:data.answer || "",
+        module:"arz_ai"
+      });
     }
   }catch(e){
     cevap.innerText = "ARZ AI bağlantı hatası.";
@@ -1050,25 +1359,9 @@ function demoQR(){
       Bölge: Hatay / Kırıkhan<br>
       Öncelik: Kritik
     </div>
-    <button class="btn full" onclick="qrToShipment()">Lojistiğe Aktar</button>
+    <button class="btn full" onclick="go('logistics')">Lojistiğe Aktar</button>
     <button class="btn secondary full" onclick="go('map')">Haritada Göster</button>
   `;
-}
-
-function qrToShipment(){
-  state.shipments.push({
-    id:"QR-" + Date.now(),
-    name:"QR Sevkiyat",
-    from:"Ankara",
-    to:"Hatay / Kırıkhan",
-    vehicle:"Tır",
-    driver:"AFAD Demo",
-    content:"Tıbbi Malzeme Konteyneri",
-    priority:"Kritik",
-    status:"QR ile doğrulandı"
-  });
-  save("arz_shipments", state.shipments);
-  go("logistics");
 }
 
 function demoNFC(){
@@ -1089,10 +1382,10 @@ function renderSettings(){
   const sections = [
     ["general","Genel"],
     ["accessibility","Erişilebilirlik"],
-    ["home","Ana Ekran"],
     ["ai","ARZ AI Ayarları"],
     ["notifications","Bildirimler"],
     ["map","Harita Ayarları"],
+    ["appearance","Görünüm"],
     ["security","Güvenlik ve Veri"],
     ["about","Hakkında"]
   ];
@@ -1115,21 +1408,45 @@ function selectSetting(id){
   renderSettings();
 }
 
-function toggleSetting(key){
-  state.settings[key] = !state.settings[key];
-  save("arz_settings", state.settings);
-  applySettings();
+async function saveSettingsPatch(patch){
+  currentSettings = {
+    ...currentSettings,
+    ...patch
+  };
+  await updateUserSettings(currentUser.uid, patch);
+}
+
+async function toggleSetting(key){
+  if(key === "aiMemory"){
+    await saveSettingsPatch({ aiMemory: !currentSettings.aiMemory });
+  }
+
+  if(key === "notificationsEnabled"){
+    await saveSettingsPatch({ notificationsEnabled: !currentSettings.notificationsEnabled });
+  }
+
+  if(["boldText","highContrast","largeButtons"].includes(key)){
+    const current = currentSettings.accessibilitySettings || {};
+    const next = {
+      ...current,
+      [key]: !current[key]
+    };
+
+    await saveSettingsPatch({ accessibilitySettings: next });
+    applyAccessibility(next);
+  }
+
   renderSettings();
 }
 
-function settingRow(key,label,desc){
+function settingRow(key,label,desc,checked){
   return `
     <div class="toggle-row">
       <div>
         <b>${label}</b><br>
         <span class="muted">${desc}</span>
       </div>
-      <div class="switch ${state.settings[key]?'on':''}" onclick="toggleSetting('${key}')">
+      <div class="switch ${checked?'on':''}" onclick="toggleSetting('${key}')">
         <div class="knob"></div>
       </div>
     </div>
@@ -1138,44 +1455,53 @@ function settingRow(key,label,desc){
 
 function renderSettingContent(){
   const el = $("settingsContent");
+  const acc = currentSettings?.accessibilitySettings || {};
 
   if(selectedSetting === "general"){
     el.innerHTML = `
       <h2>Genel</h2>
-      ${settingRow("offlineMode","Offline Mod","Demo veriler cihazda saklanır.")}
-      ${settingRow("localBrain","Local Brain","Ücretsiz yerel karar destek motoru.")}
-      ${settingRow("storeReports","Raporları Sakla","Raporları localStorage içinde tutar.")}
+      <p class="muted">Firebase profil ve ayar sistemi aktiftir.</p>
+      <p><b>Kullanıcı:</b> ${currentProfile?.fullName || currentUser?.email}</p>
+      <p><b>Rol:</b> ${getRole(currentProfile?.role || "citizen").label}</p>
     `;
   } else if(selectedSetting === "accessibility"){
     el.innerHTML = `
       <h2>Erişilebilirlik</h2>
-      ${settingRow("boldText","Kalın Metin","Yazıları daha belirgin yapar.")}
-      ${settingRow("highContrast","Yüksek Kontrast","Kart ve metin kontrastını artırır.")}
-      ${settingRow("largeButtons","Büyük Butonlar","Butonları daha büyük hale getirir.")}
+      ${settingRow("boldText","Kalın Metin","Yazıları daha belirgin yapar.", !!acc.boldText)}
+      ${settingRow("highContrast","Yüksek Kontrast","Kart ve metin kontrastını artırır.", !!acc.highContrast)}
+      ${settingRow("largeButtons","Büyük Butonlar","Butonları daha büyük hale getirir.", !!acc.largeButtons)}
     `;
   } else if(selectedSetting === "ai"){
     el.innerHTML = `
       <h2>ARZ AI Ayarları</h2>
-      ${settingRow("aiMemory","AI Hafızası","Soru-cevap geçmişini cihazda saklar.")}
-      ${settingRow("localBrain","Local Brain","API kullanmadan cevap üretir.")}
+      ${settingRow("aiMemory","AI Hafızası","Soru-cevap geçmişini Firestore içinde saklar.", !!currentSettings?.aiMemory)}
     `;
   } else if(selectedSetting === "notifications"){
     el.innerHTML = `
       <h2>Bildirimler</h2>
-      ${settingRow("notifications","Bildirimleri Aç","Demo bildirim altyapısı.")}
-      ${settingRow("emergencySos","Acil SOS","Acil durum protokol rozeti aktif kalır.")}
+      ${settingRow("notificationsEnabled","Bildirimleri Aç","Demo bildirim altyapısı.", !!currentSettings?.notificationsEnabled)}
+    `;
+  } else if(selectedSetting === "appearance"){
+    el.innerHTML = `
+      <h2>Görünüm</h2>
+      <button class="btn" onclick="setThemeAndSave('afad')">AFAD Tema</button>
+      <button class="btn" onclick="setThemeAndSave('kizilay')">Kızılay Tema</button>
+      <button class="btn" onclick="setThemeAndSave('yesilay')">Yeşilay Tema</button>
+      <button class="btn" onclick="setThemeAndSave('akut')">AKUT Tema</button>
     `;
   } else if(selectedSetting === "map"){
     el.innerHTML = `
       <h2>Harita Ayarları</h2>
-      ${settingRow("mapLive","Canlı Veri Simülasyonu","Harita modülünde demo canlı veri gösterir.")}
-      ${settingRow("offlineMode","Offline Harita Demo","Veriler cihazda saklanır.")}
+      <p class="muted">Harita katmanları demo verilerle çalışır.</p>
+      <button class="btn secondary" onclick="setLayer('earthquake')">Deprem Katmanı</button>
+      <button class="btn secondary" onclick="setLayer('flood')">Sel Katmanı</button>
+      <button class="btn secondary" onclick="setLayer('fire')">Yangın Katmanı</button>
     `;
   } else if(selectedSetting === "security"){
     el.innerHTML = `
       <h2>Güvenlik ve Veri</h2>
-      <p class="muted">Bu demo sürümde veriler tarayıcı localStorage alanında tutulur.</p>
-      <button class="btn secondary" onclick="localStorage.clear();location.reload()">Tüm Demo Verileri Temizle</button>
+      <p class="muted">Profil ve ayarlar Firestore üzerinde saklanır. Demo yerel veriler localStorage’da kalabilir.</p>
+      <button class="btn secondary" onclick="localStorage.clear();location.reload()">Yerel Demo Verileri Temizle</button>
     `;
   } else if(selectedSetting === "about"){
     el.innerHTML = `
@@ -1183,24 +1509,83 @@ function renderSettingContent(){
       <p><b>ARZ - Afet Raporlama ve Zamanlama</b>, afet durumlarında saha bildirimi, lojistik, harita, halk sağlığı ve karar destek süreçlerini birleştiren demo sistemdir.</p>
       <p><b>Geliştirici:</b> Şehmus AYKUT</p>
       <p><b>Slogan:</b> Doğru Veri, Doğru Zaman, Doğru Müdahale.</p>
-      <p><b>Sürüm:</b> v5.1.1 Local Brain Demo</p>
+      <p><b>Sürüm:</b> v5.2.0 Firebase Demo</p>
     `;
   } else {
     el.innerHTML = `<h2>Ayarlar</h2><p>Bu bölüm için demo ayarlar hazırlanıyor.</p>`;
   }
 }
 
-function applySettings(){
-  document.body.style.fontWeight = state.settings.boldText ? "700" : "400";
-  document.body.style.filter = state.settings.highContrast ? "contrast(1.12)" : "none";
-  document.querySelectorAll(".btn").forEach(b => {
-    b.style.padding = state.settings.largeButtons ? "15px 17px" : "";
-  });
+async function setThemeAndSave(theme){
+  applyTheme(theme);
+  await saveSettingsPatch({ theme });
+  renderSettings();
 }
 
-navRender();
-applySettings();
-render();
+function applyTheme(theme){
+  if(theme === "kizilay"){
+    document.documentElement.style.setProperty("--primary","#7F1D1D");
+    document.documentElement.style.setProperty("--primary-2","#991B1B");
+    document.documentElement.style.setProperty("--accent","#DC2626");
+  } else if(theme === "yesilay"){
+    document.documentElement.style.setProperty("--primary","#065F46");
+    document.documentElement.style.setProperty("--primary-2","#047857");
+    document.documentElement.style.setProperty("--accent","#22C55E");
+  } else if(theme === "akut"){
+    document.documentElement.style.setProperty("--primary","#111827");
+    document.documentElement.style.setProperty("--primary-2","#1F2937");
+    document.documentElement.style.setProperty("--accent","#F97316");
+  } else {
+    document.documentElement.style.setProperty("--primary","#0B2D5C");
+    document.documentElement.style.setProperty("--primary-2","#003366");
+    document.documentElement.style.setProperty("--accent","#E53935");
+  }
+}
+
+function applyAccessibility(acc){
+  document.body.style.fontWeight = acc.boldText ? "700" : "400";
+  document.body.style.filter = acc.highContrast ? "contrast(1.12)" : "none";
+}
+
+async function saveProfile(){
+  openModal("<h2>Profil Güncelleme</h2><p>Bu demo sürümde profil düzenleme paneli sonraki aşamaya ayrıldı. Mevcut profil Firebase üzerinde kayıtlıdır.</p>");
+}
+
+listenAuth(async session => {
+  if(!session){
+    showAuth();
+    return;
+  }
+
+  await bootApp(session);
+});
+
+window.setAuthMode = setAuthMode;
+window.handleRegister = handleRegister;
+window.handleLogin = handleLogin;
+window.handleLogout = handleLogout;
+window.go = go;
+window.setLayer = setLayer;
+window.showMapInfo = showMapInfo;
+window.addShipment = addShipment;
+window.applyRoute = applyRoute;
+window.addVolunteer = addVolunteer;
+window.assignVolunteer = assignVolunteer;
+window.addFieldReport = addFieldReport;
+window.createReport = createReport;
+window.viewReport = viewReport;
+window.exportReports = exportReports;
+window.askAI = askAI;
+window.quickAsk = quickAsk;
+window.openCamera = openCamera;
+window.closeCamera = closeCamera;
+window.demoQR = demoQR;
+window.demoNFC = demoNFC;
+window.closeModal = closeModal;
+window.selectSetting = selectSetting;
+window.toggleSetting = toggleSetting;
+window.setThemeAndSave = setThemeAndSave;
+window.saveProfile = saveProfile;
 </script>
 </body>
 </html>
