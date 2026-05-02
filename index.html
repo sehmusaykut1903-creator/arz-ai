@@ -1,136 +1,141 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ARZ AI</title>
+<meta charset="UTF-8">
+<title>ARZ - Afet Sistemi</title>
 
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #f4f6f9;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
+<style>
+body {
+  margin:0;
+  font-family: Arial;
+  background:#0f172a;
+  color:white;
+  display:flex;
+}
 
-    .container {
-      width: 420px;
-      max-width: 92%;
-      background: white;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      text-align: center;
-    }
+.sidebar {
+  width:220px;
+  background:#020617;
+  padding:20px;
+}
 
-    h1 {
-      margin: 0;
-      font-size: 36px;
-      font-weight: 800;
-      color: #0b2d5c;
-    }
+.sidebar h2 {
+  color:#ef4444;
+}
 
-    .subtitle {
-      font-size: 12px;
-      letter-spacing: 2px;
-      color: #666;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-    }
+.menu {
+  margin-top:20px;
+}
 
-    input {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      margin-bottom: 12px;
-      font-size: 14px;
-    }
+.menu div {
+  padding:10px;
+  margin-bottom:8px;
+  cursor:pointer;
+  border-radius:8px;
+}
 
-    button {
-      width: 100%;
-      padding: 12px;
-      background: #e53935;
-      border: none;
-      color: white;
-      border-radius: 8px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+.menu div:hover {
+  background:#1e293b;
+}
 
-    button:hover {
-      background: #c62828;
-    }
+.main {
+  flex:1;
+  padding:20px;
+}
 
-    #cevap {
-      margin-top: 20px;
-      text-align: left;
-      font-size: 14px;
-      white-space: pre-wrap;
-      background: #f7f7f7;
-      padding: 12px;
-      border-radius: 8px;
-      min-height: 60px;
-      line-height: 1.5;
-    }
+.card {
+  background:white;
+  color:black;
+  padding:20px;
+  border-radius:12px;
+  max-width:500px;
+}
 
-    .loading {
-      color: #999;
-      font-style: italic;
-    }
-  </style>
+button {
+  width:100%;
+  padding:12px;
+  background:#ef4444;
+  border:none;
+  color:white;
+  margin-top:10px;
+  border-radius:8px;
+  cursor:pointer;
+}
+</style>
 </head>
 
 <body>
 
-<div class="container">
-  <h1>ARZ</h1>
-  <div class="subtitle">Afet Raporlama ve Zamanlama</div>
-
-  <input id="soru" placeholder="Sorunuzu yazın..." />
-  <button onclick="calistir()">Sor</button>
-
-  <div id="cevap">Cevap burada görünecek...</div>
+<div class="sidebar">
+  <h2>ARZ</h2>
+  <div class="menu">
+    <div onclick="sayfa('panel')">Panel</div>
+    <div onclick="sayfa('harita')">Harita</div>
+    <div onclick="sayfa('lojistik')">Lojistik</div>
+    <div onclick="sayfa('ai')">ARZ AI</div>
+  </div>
 </div>
 
+<div class="main" id="icerik"></div>
+
 <script>
-async function calistir() {
-  const input = document.getElementById("soru");
-  const cevap = document.getElementById("cevap");
 
-  const mesaj = input.value.trim();
+function sayfa(p) {
 
-  if (!mesaj) {
-    cevap.innerText = "Lütfen bir soru yaz.";
-    return;
+  if(p=="panel"){
+    document.getElementById("icerik").innerHTML = `
+      <h1>Kontrol Paneli</h1>
+      <p>Sistem aktif</p>
+    `;
   }
 
-  cevap.innerHTML = "<span class='loading'>ARZ AI düşünüyor...</span>";
+  if(p=="harita"){
+    document.getElementById("icerik").innerHTML = `
+      <h1>Harita</h1>
+      <p>Buraya Google Maps / Leaflet gelecek</p>
+    `;
+  }
 
-  try {
-    const res = await fetch("/api/ask", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        message: mesaj
-      })
-    });
+  if(p=="lojistik"){
+    document.getElementById("icerik").innerHTML = `
+      <h1>Yeni Sevkiyat</h1>
+      <input id="lokasyon" placeholder="Konum">
+      <input id="malzeme" placeholder="Malzeme">
+      <button onclick="kaydet()">Kaydet</button>
+    `;
+  }
 
-    const data = await res.json();
-
-    cevap.innerText = data.answer || data.error || "Cevap alınamadı.";
-
-  } catch (err) {
-    cevap.innerText = "Bağlantı hatası oluştu.";
+  if(p=="ai"){
+    document.getElementById("icerik").innerHTML = `
+      <div class="card">
+        <h2>ARZ AI</h2>
+        <input id="soru" placeholder="Sor">
+        <button onclick="sor()">Sor</button>
+        <p id="cevap"></p>
+      </div>
+    `;
   }
 }
+
+async function sor(){
+  const mesaj = document.getElementById("soru").value;
+
+  const res = await fetch("/api/ask", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({message:mesaj})
+  });
+
+  const data = await res.json();
+  document.getElementById("cevap").innerText = data.answer;
+}
+
+function kaydet(){
+  alert("Sevkiyat kaydedildi (demo)");
+}
+
+sayfa("panel");
+
 </script>
 
 </body>
