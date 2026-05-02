@@ -1,0 +1,21 @@
+{
+  "name": "arz-ai",
+  "version": "1.0.0",
+  "description": "ARZ - Afet Raporlama ve Zamanlama Local Brain demo sistemi",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "vercel dev",
+    "dev": "vercel dev"
+  },
+  "keywords": [
+    "ARZ",
+    "afet",
+    "raporlama",
+    "zamanlama",
+    "local-brain",
+    "disaster-management"
+  ],
+  "author": "Şehmus AYKUT",
+  "license": "UNLICENSED"
+}
