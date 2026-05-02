@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>ARZ AI</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #f5f7fa;
+  padding: 20px;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+}
+
+h1 {
+  font-size: 32px;
+  color: #0b3c5d;
+}
+
+.sub {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #888;
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 12px;
+  background: #d90429;
+  color: white;
+  border: none;
+  width: 100%;
+}
+
+#cevap {
+  margin-top: 20px;
+  white-space: pre-wrap;
+  background: white;
+  padding: 10px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+  <h1>ARZ</h1>
+  <div class="sub">AFET RAPORLAMA VE ZAMANLAMA</div>
+
+  <input id="soru" placeholder="Sorunuzu yazın..." />
+  <button onclick="sor()">Sor</button>
+
+  <div id="cevap"></div>
+</div>
+
+<script>
+async function sor() {
+  const mesaj = document.getElementById("soru").value;
+
+  const res = await fetch("/api/ask", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ message: mesaj })
+  });
+
+  const data = await res.json();
+  document.getElementById("cevap").innerText = data.answer;
+}
+</script>
+
+</body>
+</html>
