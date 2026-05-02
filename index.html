@@ -1,142 +1,639 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<title>ARZ - Afet Sistemi</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ARZ - Afet Raporlama ve Zamanlama</title>
 
 <style>
+:root {
+  --primary: #0b2d5c;
+  --accent: #e53935;
+  --bg: #f4f6f9;
+  --card: #ffffff;
+  --text: #111827;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  margin:0;
-  font-family: Arial;
-  background:#0f172a;
-  color:white;
-  display:flex;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  height: 100vh;
 }
 
 .sidebar {
-  width:220px;
-  background:#020617;
-  padding:20px;
+  background: #071a33;
+  color: white;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
 }
 
-.sidebar h2 {
-  color:#ef4444;
+.brand {
+  margin-bottom: 28px;
 }
 
-.menu {
-  margin-top:20px;
+.brand-title {
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: -1px;
 }
 
-.menu div {
-  padding:10px;
-  margin-bottom:8px;
-  cursor:pointer;
-  border-radius:8px;
+.brand-title span {
+  color: var(--accent);
 }
 
-.menu div:hover {
-  background:#1e293b;
+.brand-sub {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #cbd5e1;
+  margin-top: 4px;
+}
+
+.nav button {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: #cbd5e1;
+  text-align: left;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.nav button.active,
+.nav button:hover {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1.5;
 }
 
 .main {
-  flex:1;
-  padding:20px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100vh;
+}
+
+.header {
+  height: 70px;
+  background: white;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.status {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.badge {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.badge.red {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.content {
+  padding: 22px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
 }
 
 .card {
-  background:white;
-  color:black;
-  padding:20px;
-  border-radius:12px;
-  max-width:500px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 10px 25px rgba(15,23,42,0.06);
 }
 
-button {
-  width:100%;
-  padding:12px;
-  background:#ef4444;
-  border:none;
-  color:white;
-  margin-top:10px;
-  border-radius:8px;
-  cursor:pointer;
+.card h3 {
+  margin-top: 0;
+}
+
+.big {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--primary);
+}
+
+.btn {
+  border: none;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn.secondary {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin: 7px 0;
+  font-size: 14px;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #f8fafc;
+}
+
+.map-box {
+  height: 420px;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(229,57,53,0.25), transparent 20%),
+    radial-gradient(circle at 65% 45%, rgba(14,165,233,0.22), transparent 22%),
+    linear-gradient(135deg, #dbeafe, #ecfeff);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 8px 10px;
+  border-radius: 999px;
+  color: white;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,.25);
+}
+
+.layer-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.layer {
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.layer.active {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  border-color: var(--accent);
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.answer {
+  white-space: pre-wrap;
+  line-height: 1.55;
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 14px;
+  border: 1px solid var(--border);
+}
+
+.settings {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 16px;
+}
+
+.settings-menu button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.settings-menu button.active {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.switch {
+  width: 54px;
+  height: 30px;
+  border-radius: 999px;
+  background: #cbd5e1;
+  padding: 3px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.switch.on {
+  background: var(--accent);
+}
+
+.knob {
+  width: 24px;
+  height: 24px;
+  background: white;
+  border-radius: 50%;
+  transition: .2s;
+}
+
+.switch.on .knob {
+  transform: translateX(24px);
+}
+
+.footer-note {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 16px;
+}
+
+@media (max-width: 850px) {
+  .app {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    height: auto;
+  }
+
+  .nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  .main {
+    height: auto;
+  }
+
+  body {
+    overflow: auto;
+  }
+
+  .settings {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 </head>
 
 <body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-title">ARZ<span>.</span></div>
+      <div class="brand-sub">AFET RAPORLAMA VE ZAMANLAMA</div>
+    </div>
 
-<div class="sidebar">
-  <h2>ARZ</h2>
-  <div class="menu">
-    <div onclick="sayfa('panel')">Panel</div>
-    <div onclick="sayfa('harita')">Harita</div>
-    <div onclick="sayfa('lojistik')">Lojistik</div>
-    <div onclick="sayfa('ai')">ARZ AI</div>
-  </div>
+    <nav class="nav" id="nav"></nav>
+
+    <div class="sidebar-footer">
+      ARZ Sistemi © 2026<br>
+      Şehmus AYKUT tarafından geliştirilmiştir.
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="header">
+      <h1 id="pageTitle">Panel</h1>
+      <div class="status">
+        <span class="badge red">Acil Durum Protokolü</span>
+        <span class="badge">Local Brain Aktif</span>
+        <span class="badge">Offline Sync</span>
+      </div>
+    </header>
+
+    <section class="content" id="content"></section>
+  </main>
 </div>
 
-<div class="main" id="icerik"></div>
-
 <script>
+const pages = [
+  ["panel", "Panel"],
+  ["map", "Harita"],
+  ["logistics", "Lojistik"],
+  ["scanner", "Tarama Merkezi"],
+  ["volunteers", "Gönüllü Sistemi"],
+  ["publicHealth", "Halk Sağlığı"],
+  ["reports", "Raporlar"],
+  ["ai", "ARZ AI"],
+  ["settings", "Ayarlar"]
+];
 
-function sayfa(p) {
+let currentPage = "panel";
+let currentLayer = "earthquake";
+let selectedSetting = "general";
 
-  if(p=="panel"){
-    document.getElementById("icerik").innerHTML = `
-      <h1>Kontrol Paneli</h1>
-      <p>Sistem aktif</p>
-    `;
-  }
+const state = {
+  shipments: JSON.parse(localStorage.getItem("arz_shipments") || "[]"),
+  volunteers: JSON.parse(localStorage.getItem("arz_volunteers") || "[]"),
+  reports: JSON.parse(localStorage.getItem("arz_reports") || "[]"),
+  settings: JSON.parse(localStorage.getItem("arz_settings") || "{}")
+};
 
-  if(p=="harita"){
-    document.getElementById("icerik").innerHTML = `
-      <h1>Harita</h1>
-      <p>Buraya Google Maps / Leaflet gelecek</p>
-    `;
-  }
+const defaultSettings = {
+  notifications: true,
+  localBrain: true,
+  offlineMode: true,
+  highContrast: false,
+  boldText: false,
+  largeButtons: false,
+  mapLive: true,
+  aiMemory: true,
+  emergencySos: true
+};
 
-  if(p=="lojistik"){
-    document.getElementById("icerik").innerHTML = `
-      <h1>Yeni Sevkiyat</h1>
-      <input id="lokasyon" placeholder="Konum">
-      <input id="malzeme" placeholder="Malzeme">
-      <button onclick="kaydet()">Kaydet</button>
-    `;
-  }
+state.settings = { ...defaultSettings, ...state.settings };
 
-  if(p=="ai"){
-    document.getElementById("icerik").innerHTML = `
-      <div class="card">
-        <h2>ARZ AI</h2>
-        <input id="soru" placeholder="Sor">
-        <button onclick="sor()">Sor</button>
-        <p id="cevap"></p>
+function save(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function navRender() {
+  const nav = document.getElementById("nav");
+  nav.innerHTML = pages.map(([id, label]) => `
+    <button class="${currentPage === id ? "active" : ""}" onclick="go('${id}')">${label}</button>
+  `).join("");
+}
+
+function go(page) {
+  currentPage = page;
+  navRender();
+  render();
+}
+
+function title(t) {
+  document.getElementById("pageTitle").innerText = t;
+}
+
+function render() {
+  const c = document.getElementById("content");
+
+  if (currentPage === "panel") {
+    title("Genel Yönetim Paneli");
+    c.innerHTML = `
+      <div class="grid">
+        <div class="card"><h3>Vaka / Yaralı Verisi</h3><div class="big">1428</div><p>Son 1 saatte +42 bildirim</p></div>
+        <div class="card"><h3>Lojistik Akış</h3><div class="big">${state.shipments.length}</div><p>Aktif sevkiyat</p></div>
+        <div class="card"><h3>Gönüllü Yönetimi</h3><div class="big">${state.volunteers.length}</div><p>Kayıtlı gönüllü</p></div>
+        <div class="card"><h3>Sistem Riski</h3><div class="big">%84</div><p>Kritik durum izleniyor</p></div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <h3>Hızlı İşlem Merkezi</h3>
+        <button class="btn" onclick="go('logistics')">Yeni Sevkiyat</button>
+        <button class="btn" onclick="go('map')">Haritada Göster</button>
+        <button class="btn" onclick="go('ai')">ARZ AI Analiz Al</button>
+        <button class="btn" onclick="createReport()">Rapor Oluştur</button>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <h3>Güncel Saha Bildirimleri</h3>
+        <div class="list">
+          <div class="item">Acil Triaj Talebi • Hatay • 2 dk önce</div>
+          <div class="item">Lojistik Sevkiyat #S1 • Ankara • 8 dk önce</div>
+          <div class="item">Su Deposu Kritik • Elbistan • 24 dk önce</div>
+        </div>
       </div>
     `;
   }
-}
 
-async function sor(){
-  const mesaj = document.getElementById("soru").value;
+  else if (currentPage === "map") {
+    title("Stratejik Afet Haritası");
+    const markers = getMarkers(currentLayer);
+    c.innerHTML = `
+      <div class="layer-row">
+        ${[
+          ["earthquake","Deprem"],
+          ["flood","Sel"],
+          ["fire","Yangın"],
+          ["logistics","Lojistik"],
+          ["health","Sağlık Noktaları"]
+        ].map(([id,label]) => `
+          <button class="layer ${currentLayer===id?"active":""}" onclick="setLayer('${id}')">${label}</button>
+        `).join("")}
+      </div>
 
-  const res = await fetch("/api/ask", {
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({message:mesaj})
-  });
+      <div class="grid">
+        <div class="card">
+          <h3>${layerName(currentLayer)} Katmanı</h3>
+          <div class="map-box">
+            ${markers.map(m => `
+              <div class="marker" style="left:${m.x}%;top:${m.y}%;background:${m.color}" onclick="showMapInfo('${m.city}','${m.type}','${m.risk}')">
+                ${m.city}
+              </div>
+            `).join("")}
+          </div>
+        </div>
 
-  const data = await res.json();
-  document.getElementById("cevap").innerText = data.answer;
-}
+        <div class="card" id="mapInfo">
+          <h3>Harita Bilgisi</h3>
+          <p>Katman seçin veya marker’a tıklayın.</p>
+          <p><b>Yozgat:</b> Pilot koordinasyon merkezi.</p>
+        </div>
+      </div>
+    `;
+  }
 
-function kaydet(){
-  alert("Sevkiyat kaydedildi (demo)");
-}
+  else if (currentPage === "logistics") {
+    title("Lojistik ve Sevkiyat");
+    c.innerHTML = `
+      <div class="grid">
+        <div class="card">
+          <h3>Yeni Sevkiyat</h3>
+          <input id="shipName" placeholder="Sevkiyat adı">
+          <input id="from" placeholder="Çıkış noktası">
+          <input id="to" placeholder="Varış noktası">
+          <input id="vehicle" placeholder="Araç tipi / plaka">
+          <textarea id="contentShip" placeholder="İçerik / miktar"></textarea>
+          <select id="priority">
+            <option>Kritik</option>
+            <option>Yüksek</option>
+            <option>Orta</option>
+            <option>Düşük</option>
+          </select>
+          <button class="btn" onclick="addShipment()">Sevkiyat Ekle</button>
+        </div>
 
-sayfa("panel");
+        <div class="card">
+          <h3>Aktif Sevkiyatlar</h3>
+          <div class="list">
+            ${state.shipments.length ? state.shipments.map(s => `
+              <div class="item">
+                <b>${s.name}</b><br>
+                ${s.from} → ${s.to}<br>
+                ${s.content}<br>
+                Öncelik: ${s.priority}<br>
+                Durum: ${s.status}
+                <button class="btn secondary" onclick="applyRoute('${s.id}')">Rotayı Uygula</button>
+              </div>
+            `).join("") : "<p>Henüz sevkiyat yok.</p>"}
+          </div>
+        </div>
+      </div>
+    `;
+  }
 
-</script>
+  else if (currentPage === "scanner") {
+    title("ARZ Tarama Merkezi");
+    c.innerHTML = `
+      <div class="grid">
+        <div class="card">
+          <h3>QR / Barkod Tarama</h3>
+          <p>Kamera destekliyse izin isteyerek açılır. Demo tarama her cihazda çalışır.</p>
+          <video id="camera" autoplay playsinline style="width:100%;border-radius:14px;background:#111"></video>
+          <button class="btn" onclick="openCamera()">Kamerayı Aç</button>
+          <button class="btn secondary" onclick="closeCamera()">Kamerayı Kapat</button>
+          <button class="btn" onclick="demoQR()">Demo QR Tara</button>
+        </div>
+        <div class="card" id="scanResult">
+          <h3>Tarama Sonucu</h3>
+          <p>Henüz tarama yapılmadı.</p>
+        </div>
+      </div>
+    `;
+  }
 
-</body>
-</html>
+  else if (currentPage === "volunteers") {
+    title("Gönüllü Sistemi");
+    c.innerHTML = `
+      <div class="grid">
+        <div class="card">
+          <h3>Gönüllü Ekle</h3>
+          <input id="volName" placeholder="Ad Soyad">
+          <input id="volCity" placeholder="İl">
+          <input id="volSkill" placeholder="Yetkinlik">
+          <button class="btn" onclick="addVolunteer()">Gönüllü Kaydet</button>
+        </div>
+        <div class="card">
+          <h3>Kayıtlı Gönüllüler</h3>
+          <div class="list">
+            ${state.volunteers.length ? state.volunteers.map(v => `
+              <div class="item"><b>${v.name}</b><br>${v.city}<br>${v.skill}<br>Durum: Aktif</div>
+            `).join("") : "<p>Henüz gönüllü yok.</p>"}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  else if (currentPage === "publicHealth") {
+    title("Halk Sağlığı");
+    c.innerHTML = `
+      <div class="grid">
+        <div class="card"><h3>Enfeksiyon Riski</h3><div class="big">%12</div></div>
+        <div class="card"><h3>Su Güvenliği</h3><div class="big">%98</div></div>
+        <div class="card"><h3>Aşılama Oranı</h3><div class="big">%84</div></div>
+        <div class="card"><h3>Sağlık Hizmetlerinde Normalleşme</h3><div class="big">%71</div><p>Prof. Dr. Vugar Ali Türksoy önerisiyle takip göstergesi.</p></div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h3>Stratejik Müdahale</h3>
+        <div class="item">Şebeke suyu klorlama • Kritik öncelik</div>
+        <div class="item">Mobil aşılama • Yüksek öncelik</div>
+        <div class="item">Gıda hijyeni denetimi • Orta öncelik</div>
+      </div>
+    `;
+  }
+
+  else if (currentPage === "reports") {
+    title("Veri Raporları");
+    c.innerHTML = `
+      <div class="card">
+        <h3>Raporlar</h3>
+        <button class="btn" onclick="createReport()">Yeni Rapor Oluştur</button>
+        <div class="list" style="margin-top:14px">
+          ${state.reports.length ? state.reports.map(r => `
+            <div class="item">
+              <b>${r.title}</b><br>
+              ${r.date}<br>
+              ${r.summary}
+            </div>
+          `).join("") : "<p>Henüz rapor yok.</p>"}
+        </div>
+      </div>
+    `;
+ 
